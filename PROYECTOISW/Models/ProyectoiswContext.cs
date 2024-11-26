@@ -17,11 +17,15 @@ public partial class ProyectoiswContext : DbContext
 
     public virtual DbSet<Cita> Citas { get; set; }
 
+    public virtual DbSet<Comentario> Comentarios { get; set; }
+
     public virtual DbSet<Favorito> Favoritos { get; set; }
 
     public virtual DbSet<Imagene> Imagenes { get; set; }
 
     public virtual DbSet<Propiedade> Propiedades { get; set; }
+
+    public virtual DbSet<Rentada> Rentadas { get; set; }
 
     public virtual DbSet<Reseña> Reseñas { get; set; }
 
@@ -53,6 +57,29 @@ public partial class ProyectoiswContext : DbContext
                 .HasForeignKey(d => d.IdUsuario)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Citas__Id_Usuari__571DF1D5");
+        });
+
+        modelBuilder.Entity<Comentario>(entity =>
+        {
+            entity.HasKey(e => e.IdComentario).HasName("PK__Comentar__5B4FE56FA9BB896D");
+
+            entity.Property(e => e.IdComentario).HasColumnName("Id_Comentario");
+            entity.Property(e => e.Comentario1)
+                .HasMaxLength(200)
+                .IsUnicode(false)
+                .HasColumnName("Comentario");
+            entity.Property(e => e.IdPropiedad).HasColumnName("Id_Propiedad");
+            entity.Property(e => e.IdUsuario).HasColumnName("Id_Usuario");
+
+            entity.HasOne(d => d.IdPropiedadNavigation).WithMany(p => p.Comentarios)
+                .HasForeignKey(d => d.IdPropiedad)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__Comentari__Id_Pr__797309D9");
+
+            entity.HasOne(d => d.IdUsuarioNavigation).WithMany(p => p.Comentarios)
+                .HasForeignKey(d => d.IdUsuario)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__Comentari__Comen__787EE5A0");
         });
 
         modelBuilder.Entity<Favorito>(entity =>
@@ -132,13 +159,32 @@ public partial class ProyectoiswContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("Tipo_Propiedad");
             entity.Property(e => e.Titulo)
-                .HasMaxLength(20)
+                .HasMaxLength(50)
                 .IsUnicode(false);
 
             entity.HasOne(d => d.IdUsuarioNavigation).WithMany(p => p.Propiedades)
                 .HasForeignKey(d => d.IdUsuario)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Propiedad__Fecha__4BAC3F29");
+        });
+
+        modelBuilder.Entity<Rentada>(entity =>
+        {
+            entity.HasKey(e => e.IdRentada).HasName("PK__Rentadas__8FFC224F478D4FEE");
+
+            entity.Property(e => e.IdRentada).HasColumnName("Id_Rentada");
+            entity.Property(e => e.IdPropiedad).HasColumnName("Id_Propiedad");
+            entity.Property(e => e.IdUsuario).HasColumnName("Id_Usuario");
+
+            entity.HasOne(d => d.IdPropiedadNavigation).WithMany(p => p.Rentada)
+                .HasForeignKey(d => d.IdPropiedad)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__Rentadas__Id_Pro__75A278F5");
+
+            entity.HasOne(d => d.IdUsuarioNavigation).WithMany(p => p.Rentada)
+                .HasForeignKey(d => d.IdUsuario)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__Rentadas__Fecha__74AE54BC");
         });
 
         modelBuilder.Entity<Reseña>(entity =>

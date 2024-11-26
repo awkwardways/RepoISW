@@ -19,7 +19,11 @@ public partial class Usuario
 
     public string Telefono { get; set; } = null!;
 
-    public byte[] Foto { get; set; } = null!;  
+    public byte[] Foto { get; set; } = null!;
+
+    public virtual ICollection<Comentario> Comentarios { get; set; } = new List<Comentario>();
 
     public virtual ICollection<Propiedade> Propiedades { get; set; } = new List<Propiedade>();
+
+    public virtual ICollection<Rentada> Rentada { get; set; } = new List<Rentada>();
 }

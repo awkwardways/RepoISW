@@ -11,7 +11,7 @@ public partial class Propiedade
 
     public string Estado { get; set; } = null!;
 
-    public string Titulo { get; set; } = null!;
+    public string? Titulo { get; set; }
 
     public string Descripcion { get; set; } = null!;
 
@@ -35,7 +35,11 @@ public partial class Propiedade
 
     public DateTime FechaPublicacion { get; set; }
 
+    public virtual ICollection<Comentario> Comentarios { get; set; } = new List<Comentario>();
+
     public virtual Usuario IdUsuarioNavigation { get; set; } = null!;
 
     public virtual ICollection<Imagene> Imagenes { get; set; } = new List<Imagene>();
+
+    public virtual ICollection<Rentada> Rentada { get; set; } = new List<Rentada>();
 }
