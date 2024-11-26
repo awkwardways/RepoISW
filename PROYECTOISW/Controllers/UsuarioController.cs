@@ -341,7 +341,7 @@ namespace PROYECTOISW.Controllers
             await _contexto.SaveChangesAsync();
             return RedirectToAction("Index", "Home", new { id = nueva.Id, opcion = 1 });
         }
-        #endregion
+        #endregion 
         public async void BorrarCookie()
         {
             await HttpContext.SignOutAsync(
