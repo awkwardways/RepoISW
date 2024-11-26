@@ -1,0 +1,120 @@
+﻿@model PROYECTOISW.Models.ViewModel.CompartidoViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - PROYECTOISW</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-grid.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/PROYECTOISW.styles.css" asp-append-version="true" />
+    <!--<link rel="stylesheet" href="/css/Busqueda.css"/>-->
+</head>
+<body>
+    <div class="container">
+        <form asp-action="Busqueda" asp-controller="Busqueda" method="post" class="form-container">
+            <div style="width: 35%;" class="item">
+                <label for="customRange1" class="form-label">Precio Minimo</label>
+                <input asp-for="Buscar.MinPrecio" type="range" class="form-range" min="0" max="50000" step="500" id="customRange1">
+                <label for="customRange2" class="form-label">Precio Maximo</label>
+                <input asp-for="Buscar.MaxPrecio" type="range" class="form-range" min="0" max="50000" step="500" id="customRange2">
+            </div>
+            <div class="item">
+                <label for="customRange1" class="form-label">Ranges: <span id="rangeValues">0, 0</span></label>
+            </div>
+            <div class="item">
+                <select asp-for="Buscar.TipoInmueble" class="form-select" aria-label="Default select example">
+                    <option selected>Tipo de Inmueble</option>
+                    <option value="casa">Casa</option>
+                    <option value="departamento">Departamento</option>
+                    <option value="habitacion">Habitación</option>
+                </select>
+            </div>
+            <div style="width: 35%;" class="item">
+                <div class="item-d">
+                    <div>
+                        <label for="esimec" class="form-label">
+                            Distancia a ESIME Culhuácan
+                        </label>
+                        <input asp-for="Buscar.DistanciaAEscuela" type="range" class="form-range" min="0" max="5" id="esimec">
+                    </div>
+                    <div>
+                        <label for="esime" class="form-label">Distancia: <span id="esime">0 KM</span></label>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success">Buscar</button>
+        </form>
+    </div>
+    <a id="resultados"></a>
+    @{
+        int i;
+        foreach (var p in Model.Publicaciones)
+        {
+            i = 0;
+            @foreach (var e in p.Imagenes)
+            {
+                if (i == 0)
+                {
+                    <div class="card" style="width: 18rem;">
+                        @{
+                            var base64 = Convert.ToBase64String(e.Imagen);
+                            var imgSrc = $"data:image/jpeg;base64,{base64}";
+                            <a href="@Url.Action("Detalles","Busqueda", new {id = p.IdPropiedad})" target="_blank">
+                                <img src="@imgSrc" alt="Imagen de la propiedad" style="width:100%; height:auto" />
+                            </a>
+                            <div class="card-body">
+                                <h5 class="card-title">@p.Titulo</h5>
+                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                <a href="#" class="btn btn-primary">Go somewhere</a>
+                            </div>
+                        }
+                    </div>
+                    i++;
+                }
+                else break;
+            }
+        }
+    }
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        $(document).ready(function() {
+            $('a[data-target]').on('click', function(e) {
+                e.preventDefault();
+                var target = $(this).data('target');
+                var url = $(this).data('url');
+                if (url) {
+                    $(target).load(url);
+                }
+            });
+        });
+    </script>
+    <script>
+          const rangeInput1 = document.getElementById('customRange1');
+          const rangeInput2 = document.getElementById('customRange2');
+          const rangeValues = document.getElementById('rangeValues');
+          const rangeInput = document.getElementById('esimec');
+          const rangeLabel = document.getElementById('esime');
+
+          rangeInput.addEventListener('input', function() {
+          rangeLabel.textContent = `${this.value} KM`;
+        });
+
+          function updateRangeValues() {
+            rangeValues.textContent = `${rangeInput1.value}, ${rangeInput2.value}`;
+          }
+
+          rangeInput1.addEventListener('input', updateRangeValues);
+          rangeInput2.addEventListener('input', updateRangeValues);
+          esime.addEventListener('input', updateRangeValues);
+    </script>
+</body>
+</html>
+

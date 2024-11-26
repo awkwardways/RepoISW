@@ -1,0 +1,39 @@
+﻿token
+@model PROYECTOISW.Models.ViewModels.RCViewModels.ValidarTokenViewModel
+
+<div style="display: flex; justify-content: center; align-items: center; height: 100vh; background-color: white;">
+    <div style="background-color: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); width: 100%; max-width: 400px;">
+        <h2 style="text-align: center; color: black; font-size: 1.8rem;">Validar Token</h2>
+        <form asp-action="ValidarToken" method="post" style="line-height: 1.8;">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="Correo" type="hidden" />
+            <div class="mb-5">
+                <label asp-for="Token" class="form-label" style="color: #28a745; font-size: 1.2rem;">Ingresar el código</label>
+                <input asp-for="Token" class="form-control" placeholder="Ingresar Token" type="text" style="font-size: 1rem;" />
+                <span asp-validation-for="Token" class="text-danger"></span>
+            </div>
+            <div class="mb-5 text-center">
+                <button type="submit" class="btn btn-secondary" style="background-color: #28a745; border-color: #28a745; color: white; font-size: 1rem; padding: 0.5rem 1rem;">Verificar</button>
+            </div>
+            @if (!string.IsNullOrEmpty(ViewBag.Invalido))
+            {
+                <div class="alert alert-danger" role="alert" style="font-size: 1rem;">
+                    @ViewBag.Invalido
+                </div>
+            }
+        </form>
+        @if (ViewBag.TokenValido == true)
+        {
+            <div>
+                @await Html.PartialAsync("_RestablecerContraseña", new PROYECTOISW.Models.ViewModels.RCViewModels.CambiarContraseñaViewModel())
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

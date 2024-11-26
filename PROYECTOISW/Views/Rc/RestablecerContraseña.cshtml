@@ -1,0 +1,45 @@
+﻿@model PROYECTOISW.Models.ViewModels.RCViewModels.CambiarContraseñaViewModel
+
+<div style="display: flex; justify-content: center; align-items: center; height: 100vh;;">
+    <div style="background-color: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); width: 100%; max-width: 400px;">
+        <h2 style="text-align: center; ">Cambiar Contraseña</h2>
+        <form asp-action="RestablecerContraseña" asp-controller="Rc" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="Correo" type="hidden" />
+            @*    <input asp-for="Token" type="hidden" /> *@
+            <div class="mb-5">
+                <label asp-for="Nueva" class="form-label" style="color: #28a745;"></label>
+                <input asp-for="Nueva" class="form-control" type="password" placeholder="Ingresar contraseña" />
+                <span asp-validation-for="Nueva" class="text-danger"></span>
+            </div>
+            <div class="mb-5">
+                <label asp-for="Confirmar" class="form-label" style="color: #28a745;"></label>
+                <input asp-for="Confirmar" class="form-control" type="password" placeholder="Confirmar contraseña" />
+                <span asp-validation-for="Confirmar" class="text-danger"></span>
+            </div>
+            <div class="mb-5 text-center">
+                <button type="submit" class="btn btn-secondary" style="background-color: #28a745; border-color: #28a745;">Confirmar</button>
+            </div>
+            <!-- Mensaje de error -->
+            @if (!string.IsNullOrEmpty(ViewBag.Incorrecto))
+            {
+                <div class="alert alert-danger mt-3" role="alert">
+                    @ViewBag.Incorrecto
+                </div>
+            }
+            @if (!string.IsNullOrEmpty(ViewBag.Contrase))
+            {
+                <div class="alert alert-danger mt-3" role="alert">
+                    @ViewBag.Contrase
+                </div>
+            }
+        </form>
+    </div>
+</div>
+
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

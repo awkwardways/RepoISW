@@ -1,0 +1,58 @@
+﻿@model List<Propiedade>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - PROYECTOISW</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-grid.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/PROYECTOISW.styles.css" asp-append-version="true" />
+</head>
+<body>
+    @if (Model.Count != 0)
+    {
+        int i;
+        @foreach (var p in Model)
+        {
+            i = 0;
+            foreach (var e in p.Imagenes)
+            {
+                if (i == 0)
+                {
+                    <div class="card" style="width: 18rem;">
+                        @{
+                            var base64 = Convert.ToBase64String(e.Imagen);
+                            var imgSrc = $"data:image/jpeg;base64,{base64}";
+                            <a href="@Url.Action("Detalles","Busqueda", new {id = p.IdPropiedad})" target="_blank">
+                                <img src="@imgSrc" alt="Imagen de la propiedad" style="height:auto; width:100%" />
+                            </a>
+                            <div class="card-body">
+                                <h5 class="card-title">@p.Titulo</h5>
+                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                <a href="@Url.Action("Editar", "Propiedades", new {id = e.IdPropiedad})" class="btn btn-success">Editar</a>
+                                <a href="@Url.Action("Pausar", "Propiedades", new {id = e.IdPropiedad})" class="btn btn-warning">Pausar</a>
+                                <a href="@Url.Action("Eliminar", "Propiedades", new {id = e.IdPropiedad})" class="btn btn-danger">Eliminar</a>
+                            </div>
+                        }
+                    </div>
+                    i++;
+                }
+                else break;
+            }
+        }
+    }
+    else
+    {
+        <div>Aun no hay publicaciones hechas</div>
+    }
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>
+

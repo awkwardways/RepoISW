@@ -1,0 +1,204 @@
+﻿@model PROYECTOISW.Models.ViewModel.PropiedadViewModel.CrearPropiedadViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-grid.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/PROYECTOISW.styles.css" asp-append-version="true" />
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f4f4f9; /* Fondo gris claro */
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background-color: white; /* Fondo blanco */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #4CAF50; /* Verde */
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .btn-primary {
+            display: block;
+            width: 100%;
+            background-color: #4CAF50; /* Verde */
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-align: center;
+        }
+
+            .btn-primary:hover {
+                background-color: #45a049; /* Verde más oscuro */
+            }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Agregar nueva propiedad</h2>
+        <form asp-action="Editar" asp-controller="Propiedades" method="post" enctype="multipart/form-data">
+            <!--Obtiene el id de la propiedad-->
+            <input asp-for="Id" type="hidden" />
+
+            <div class="mb-4">
+                <label asp-for="Titulo">Título de la propiedad:</label>
+                <input asp-for="Titulo" class="form-control" placeholder="Hermoso departamento a 10 min de ESIME" />
+                <span asp-validation-for="Titulo" class="text-danger"></span>
+                <small>Debe ser breve pero llamativo.</small>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="Descripcion">Descripción detallada:</label>
+                <textarea asp-for="Descripcion" class="form-control" placeholder="Cercanía a ESIME, áreas comunes, transporte público..."></textarea>
+                <span asp-validation-for="Descripcion" class="text-danger"></span>
+            </div>
+
+            <div class="mb-5">
+                <label asp-for="TipoPropiedad" class="form-label"></label>
+                <select class="form-control" asp-for="TipoPropiedad">
+                    <option value="casa">Casa</option>
+                    <option value="departamento">Departamento</option>
+                    <option value="habitacion">Habitacion</option>
+                </select>
+                <span asp-validation-for="TipoPropiedad" class="text-danger"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="PrecioRenta">Precio de renta mensual ($):</label>
+                <input asp-for="PrecioRenta" type="number" class="form-control" placeholder="5000" />
+                <span asp-validation-for="PrecioRenta" class="text-danger"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="Superficie">Tamaño en metros cuadrados:</label>
+                <input asp-for="Superficie" type="number" class="form-control" />
+                <span asp-validation-for="Superficie" class="text-danger"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="NumeroHabitaciones">Número de habitaciones:</label>
+                <input asp-for="NumeroHabitaciones" type="number" class="form-control" />
+                <span asp-validation-for="NumeroHabitaciones" class="text-danger"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="NumeroBaños">Número de baños:</label>
+                <input asp-for="NumeroBaños" type="number" class="form-control" />
+                <span asp-validation-for="NumeroBaños" class="text-danger"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="Servicios">Servicios incluidos:</label>
+                <input asp-for="Servicios" class="form-control" placeholder="Agua, luz, internet, gas..." />
+                <span asp-validation-for="Servicios" class="text-danger"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="Direccion">Dirección completa:</label>
+                <input asp-for="Direccion" class="form-control" placeholder="Dirección exacta" />
+                <span asp-validation-for="Direccion" class="text-danger"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="Distancia">Distancia a ESIME (KM):</label>
+                <input asp-for="Distancia" class="form-control" placeholder="Ej: 10 minutos en metro" />
+                <span asp-validation-for="Distancia" class="text-danger"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="CondicionesEspeciales">Condiciones especiales:</label>
+                <textarea asp-for="CondicionesEspeciales" class="form-control" placeholder="Ej: No se aceptan mascotas"></textarea>
+                <span asp-validation-for="CondicionesEspeciales" class="text-danger"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="archivosImagenes" class="form-label">Imagen</label>
+                <input asp-for="archivosImagenes" multiple class="form-control" type="file" accept="image/*" />
+            </div>
+            @if (Model.Data != null)
+            {
+                <div id="carouselExampleCaptions" class="carousel slide">
+                    <div class="carousel-indicators">
+                        @for (int i = 0; i < Model.Data.Count; i++)
+                        {
+                            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="@i" class="@(i == 0 ? "active" : "")" aria-current="@(i == 0 ? "true" : "false")" aria-label="Slide @i"></button>
+                        }
+                    </div>
+                    <div class="carousel-inner">
+                        @for (int i = 0; i < Model.Data.Count; i++)
+                        {
+                            var base64 = Convert.ToBase64String(Model.Data[i]);
+                            var imgSrc = $"data:image/jpeg;base64,{base64}";
+                            <div class="carousel-item @(i == 0 ? "active" : "")">
+                                <img src="@imgSrc" class="d-block w-100" alt="...">
+                            </div>
+                        }
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            }
+            <div class="mb-1 mt-5">
+                <button type="submit" class="btn btn-success">Editar</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>
+
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

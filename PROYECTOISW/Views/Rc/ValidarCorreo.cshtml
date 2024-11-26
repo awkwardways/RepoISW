@@ -1,0 +1,33 @@
+﻿@model PROYECTOISW.Models.ViewModels.RCViewModels.ValidarCorreoViewModel
+
+<div style="display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #f8f9fa;">
+    <div style="background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); max-width: 400px; width: 100%;">
+        <h1 class="text-center" style="color: black;">Recuperación de Contraseña</h1>
+        <form asp-action="ValidarCorreo" asp-controller="Rc" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="mb-4">
+                <label asp-for="Correo" class="form-label" style="color: black;">Correo Electrónico</label>
+                <input asp-for="Correo" class="form-control" placeholder="Ingresar Correo Electrónico" type="email" style="border-color: #28a745;" />
+                <span asp-validation-for="Correo" class="text-danger"></span>
+            </div>
+            <div class="mb-4 text-center">
+                <button type="submit" class="btn" style="background-color: #28a745; color: white; border: none;">Enviar Código</button>
+            </div>
+
+            <!-- Mensaje de error -->
+            @if (!string.IsNullOrEmpty(ViewBag.Invalido))
+            {
+                <div class="alert alert-danger mt-3" role="alert">
+                    @ViewBag.Invalido
+                </div>
+            }
+        </form>
+    </div>
+</div>
+
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
