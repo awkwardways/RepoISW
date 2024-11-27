@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using PROYECTOISW.Models.ViewModel.PropiedadViewModel;
 using PROYECTOISW.Models.ViewModel;
 using Microsoft.Identity.Client;
+using System.Security.Claims;
 
 namespace PROYECTOISW.Controllers
 {
@@ -23,10 +24,6 @@ namespace PROYECTOISW.Controllers
         public async Task<IActionResult> Busqueda()
         {
             var publicaciones = await _contexto.Propiedades.Include(p => p.Imagenes).ToListAsync();
-            //foreach (var propiedad in publicaciones)
-            //{
-            //    propiedad.Imagenes = propiedad.Imagenes.Take(1).ToList();
-            //}
             var viewModel = new CompartidoViewModel();
             viewModel.Publicaciones = new List<Propiedade>();
             viewModel.Buscar = new BusquedaViewModel();

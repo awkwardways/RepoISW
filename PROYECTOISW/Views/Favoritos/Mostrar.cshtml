@@ -1,0 +1,67 @@
+﻿@model List<PROYECTOISW.Models.Propiedade>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - PROYECTOISW</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-grid.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/PROYECTOISW.styles.css" asp-append-version="true" />
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div id="propiedades-container">
+        @foreach (var p in Model)
+        {
+            <div class="card propiedad-card" data-id="@p.IdPropiedad" style="width: 18rem;">
+                @{
+                    var base64 = Convert.ToBase64String(p.Imagenes.FirstOrDefault()?.Imagen ?? new byte[0]);
+                    var imgSrc = $"data:image/jpeg;base64,{base64}";
+                }
+                <a href="@Url.Action("Detalles", "Busqueda", new { id = p.IdPropiedad })" target="_blank">
+                    <img src="@imgSrc" alt="Imagen de la propiedad" style="width:100%; height:auto" />
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title">@p.Titulo</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                    <a href="javascript:void(0);" onclick="eliminarFavorito(@p.IdPropiedad)" class="btn btn-danger mt-2">
+                        Eliminar
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        function eliminarFavorito(idPropiedad) {
+            $.ajax({
+                url: '@Url.Action("Eliminar", "Favoritos")',
+                type: 'POST',
+                data: { idPropiedad: idPropiedad },
+                success: function (result) {
+                    if (result.success) {
+                        // Eliminar la tarjeta de la propiedad de la vista
+                        $('.propiedad-card[data-id="' + idPropiedad + '"]').remove();
+                        alert('Favorito eliminado exitosamente.');
+                    } else {
+                        alert('No se pudo eliminar el favorito.');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    alert('Ocurrió un error: ' + error);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
