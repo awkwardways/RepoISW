@@ -21,9 +21,13 @@ public partial class Usuario
 
     public byte[] Foto { get; set; } = null!;
 
-    public virtual ICollection<Comentario> Comentarios { get; set; } = new List<Comentario>();
+    public virtual ICollection<Cita> Cita { get; set; } = new List<Cita>();
+
+    public virtual ICollection<Favorito> Favoritos { get; set; } = new List<Favorito>();
 
     public virtual ICollection<Propiedade> Propiedades { get; set; } = new List<Propiedade>();
 
     public virtual ICollection<Rentada> Rentada { get; set; } = new List<Rentada>();
+
+    public virtual ICollection<Reseña> Reseñas { get; set; } = new List<Reseña>();
 }

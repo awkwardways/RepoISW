@@ -21,6 +21,7 @@ namespace PROYECTOISW.Controllers
         {
             _contexto = context;
         }
+
         #region Crear
         [HttpGet]
         public IActionResult CrearUsuario()
@@ -95,7 +96,7 @@ namespace PROYECTOISW.Controllers
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                     new ClaimsPrincipal(claimsIdentity));
 
-                return RedirectToAction("Index", "Home"); // Redirigir después de guardar
+                return RedirectToAction("Index", "Home", new { id = crear.IdUsuario}); // Redirigir después de guardar
             }
             return View(nuevo);
         }
@@ -342,6 +343,7 @@ namespace PROYECTOISW.Controllers
             return RedirectToAction("Index", "Home", new { id = nueva.Id, opcion = 1 });
         }
         #endregion 
+
         public async void BorrarCookie()
         {
             await HttpContext.SignOutAsync(

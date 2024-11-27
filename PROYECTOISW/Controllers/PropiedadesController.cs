@@ -17,6 +17,7 @@ using PROYECTOISW.Models.ViewModel.PerfilViewModel;
 using System.Reflection.Metadata.Ecma335;
 using NuGet.Protocol.Plugins;
 using PROYECTOISW.Servicios;
+using Microsoft.AspNetCore.Razor.Language.CodeGeneration;
 
 namespace PROYECTOISW.Controllers
 {
@@ -24,10 +25,12 @@ namespace PROYECTOISW.Controllers
     public class PropiedadesController : Controller
     {
         private readonly ProyectoiswContext _contexto;
+        private readonly IServicioRC _servicios;
 
-        public PropiedadesController(ProyectoiswContext contexto, IWebHostEnvironment hostingEnvironment)
+        public PropiedadesController(ProyectoiswContext contexto, IWebHostEnvironment hostingEnvironment, IServicioRC servicios)
         {
             _contexto = contexto;
+            _servicios = servicios;
         }
         #region Crear
         [HttpGet]
@@ -95,7 +98,7 @@ namespace PROYECTOISW.Controllers
                         }
                         await _contexto.SaveChangesAsync();
                     }
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Home", new { id = id, opcion = 0});
                 }
             }
             var errors = ModelState.Values.SelectMany(v => v.Errors);
@@ -249,6 +252,30 @@ namespace PROYECTOISW.Controllers
                 .ExecuteUpdateAsync(setters => setters.SetProperty(s => s.Estado, "S"));
             await _contexto.SaveChangesAsync();
             return RedirectToAction(nameof(GestionarPropiedades));
+        }
+        #endregion
+
+        #region Contactar
+        [HttpGet]
+        public async Task<IActionResult> Contactar (int idUser, int idPropiedad)
+        {
+            //Buscamos el usuario en la tabla usuarios para recuperar su correo
+            var emailProp = await _contexto.Usuarios.Where(p => p.IdUsuario == idUser).Select(c=>c.CorreoElectronico).FirstOrDefaultAsync();
+            if (emailProp != null)
+            {
+                //Obtener el correo del usuario
+                var claimsIdentity = User.Identity as ClaimsIdentity;
+                var emailUser = claimsIdentity?.FindFirst(ClaimTypes.Email)?.Value;
+                var mobilPhone = claimsIdentity?.FindFirst(ClaimTypes.MobilePhone)?.Value;
+                var nameUser = claimsIdentity?.FindFirst(ClaimTypes.Name)?.Value;
+                Usuario user = new Usuario();
+                user.Telefono = mobilPhone;
+                user.NombreCompleto = nameUser;
+                user.CorreoElectronico = emailUser;
+                //Manda el correo
+                _servicios.EnviarCorreo(emailProp, user, idPropiedad);
+            }
+            return Content("");
         }
         #endregion
     }

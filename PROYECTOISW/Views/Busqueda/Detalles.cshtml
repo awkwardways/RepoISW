@@ -78,19 +78,57 @@
                 <span class="visually-hidden">Next</span>
             </button>
         </div>
-        <!--Botones de contactar y Rentar-->
-        <div class="botones">
-            <div class="mb-5">
-                <button type="submit" class="btn btn-success">Contactar</button>
-                <button type="submit" class="btn btn-success">Reseñas</button>
-            </div>
-            <div class="mb-5">
-                <button type="submit" class="btn btn-primary">Rentar</button>
+        <a href="#" id="contactar-btn" class="btn btn-success">Contactar a Propietario</a>
+
+        <!-- Modal -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Contacto con el propietario</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        ...
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Entendido</button>
+                    </div>
+                </div>
             </div>
         </div>
+        <!--Botones de contactar y Rentar-->
+      @*   <a href="@Url.Action("Contactar","Propiedades", new { idUser = Model.IdUsuario, idPropiedad = Model.IdPropiedad})" class="btn btn-success">Contactar a Propietario</a> *@
     </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        $(document).ready(function() {
+            $('#contactar-btn').click(function(event) {
+                event.preventDefault(); // Evita que el enlace redirija o recargue la página
+
+                $.ajax({
+                    url: '@Url.Action("Contactar", "Propiedades")',
+                    type: 'GET',
+                    data: {
+                        idUser: '@Model.IdUsuario',
+                        idPropiedad: '@Model.IdPropiedad'
+                    },
+                    success: function(response) {
+                        // Actualiza el contenido del modal con el mensaje de éxito
+                        $('#staticBackdrop .modal-body').text('Se ha enviado una notificación al propietario con tus datos. Espera a que el propietario se contacte contigo.');
+                        // Muestra el modal
+                        var myModal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
+                        myModal.show();
+                    },
+                    error: function(xhr, status, error) {
+                        // Manejo de errores
+                        alert('Ocurrió un error al enviar el correo');
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

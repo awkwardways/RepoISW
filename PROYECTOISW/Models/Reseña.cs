@@ -13,9 +13,9 @@ public partial class Reseña
 
     public string Comentario { get; set; } = null!;
 
-    public int? Calificacion { get; set; }
+    public int Calificacion { get; set; }
 
-    public DateOnly? FechaCreacion { get; set; }
+    public DateOnly FechaCreacion { get; set; }
 
     public virtual Propiedade IdPropiedadNavigation { get; set; } = null!;
 

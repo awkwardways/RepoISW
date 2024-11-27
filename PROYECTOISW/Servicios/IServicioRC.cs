@@ -10,5 +10,6 @@ namespace PROYECTOISW.Servicios
         Task ActualizarCon(string nuevaCon, string correo);
 
         void EnviarCorreo(string destino, string token);
+        void EnviarCorreo(string destino, Usuario user, int idPropiedad);
     }
 }

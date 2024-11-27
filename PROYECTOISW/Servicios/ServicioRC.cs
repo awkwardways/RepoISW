@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NuGet.Common;
 using PROYECTOISW.Models;
 //Agregar 
 using System.Net;
@@ -81,6 +82,36 @@ namespace PROYECTOISW.Servicios
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message.ToString());
+            }
+        }
+        public void EnviarCorreo(string destino, Usuario user, int idPropiedad)
+        {
+            try
+            {
+                MailMessage msg = new MailMessage("hernandez.granados.johan.ipn@gmail.com", destino);
+                msg.IsBodyHtml = true;
+                msg.Subject = "Interesado en tu propiedad";
+                string body = $"" +
+                    $"Hay un interesado en tu propiedad con folio de registro{idPropiedad}.\n" +
+                    $"Datos de la persona interesada: \n" +
+                    $"Nombre Completo: {user.NombreCompleto}\n" +
+                    $"Teléfono: {user.Telefono}\n" +
+                    $"Correo electronico: {user.CorreoElectronico}";
+                msg.Body = body;
+
+                SmtpClient smtp = new SmtpClient();
+                smtp.Host = "smtp.gmail.com";
+                smtp.Port = 587;
+                smtp.EnableSsl = true;
+                smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                smtp.UseDefaultCredentials = false;
+                smtp.Credentials = new NetworkCredential("hernandez.granados.johan.ipn@gmail.com", "kzvl kqnd krhb uwyn");
+                smtp.Send(msg);
+                smtp.Dispose();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
     }
