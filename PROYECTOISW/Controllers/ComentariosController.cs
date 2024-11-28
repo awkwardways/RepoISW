@@ -27,5 +27,11 @@ namespace PROYECTOISW.Controllers
             await _contexto.SaveChangesAsync();
             return Content("");
         }
+        [HttpGet]
+        public async Task <IActionResult> Mostrar()
+        {
+            var comentarios = await _contexto.Reseñas.Where(c => c.IdPropiedad == )
+            return View();
+        }
     }
 }
