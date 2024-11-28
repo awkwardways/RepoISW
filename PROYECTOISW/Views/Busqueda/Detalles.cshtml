@@ -79,6 +79,7 @@
             </button>
         </div>
         <a href="#" id="contactar-btn" class="btn btn-success">Contactar a Propietario</a>
+        <a href="@Url.Action("Rentar","Busqueda", new { idPropiedad = Model.IdPropiedad })" class="btn btn-success">Rentar</a>
 
         <!-- Modal -->
         <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -96,7 +97,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>  
         <!--Botones de contactar y Rentar-->
       @*   <a href="@Url.Action("Contactar","Propiedades", new { idUser = Model.IdUsuario, idPropiedad = Model.IdPropiedad})" class="btn btn-success">Contactar a Propietario</a> *@
     </div>

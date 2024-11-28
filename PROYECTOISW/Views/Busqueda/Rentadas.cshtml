@@ -1,0 +1,239 @@
+﻿@model List<Propiedade>
+@using PROYECTOISW.Models.ViewModel.ComentariosViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - PROYECTOISW</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-grid.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/PROYECTOISW.styles.css" asp-append-version="true" />
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!--<link rel="stylesheet" href="/css/Busqueda.css"/>-->
+</head>
+<body>
+    <style>
+        .rating:not(:checked) > input {
+            position: absolute;
+            clip: rect(0, 0, 0, 0);
+        }
+
+        .rating:not(:checked) > label {
+            float: right;
+            cursor: pointer;
+            font-size: 30px;
+            color: #666;
+        }
+
+            .rating:not(:checked) > label::before {
+                content: '★';
+            }
+
+        .rating > input:checked + label:hover,
+        .rating > input:checked + label:hover ~ label,
+        .rating > input:checked ~ label:hover,
+        .rating > input:checked ~ label:hover ~ label,
+        .rating > input:hover ~ input:checked ~ label {
+            color: #e58e09;
+        }
+
+        .rating:not(:checked) > label:hover,
+        .rating:not(:checked) > label:hover ~ label {
+            color: #ff9e0b;
+        }
+
+        .rating > input:checked ~ label {
+            color: #ffa723;
+        }
+    </style>
+    <a id="resultados"></a>
+    @{
+        int i;
+        foreach (var p in Model)
+        {
+            i = 0;
+            @foreach (var e in p.Imagenes)
+            {
+                if (i == 0)
+                {
+                    <div class="card" style="width: 18rem;">
+                        @{
+                            var base64 = Convert.ToBase64String(e.Imagen);
+                            var imgSrc = $"data:image/jpeg;base64,{base64}";
+                        }
+                        <a href="@Url.Action("Detalles","Busqueda", new {id = p.IdPropiedad})" target="_blank">
+                            <img src="@imgSrc" alt="Imagen de la propiedad" style="width:100%; height:auto" />
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title">@p.Titulo</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                            <a href="javascript:void(0);" onclick="showModal()" class="btn btn-secondary mt-2">
+                                Dejar Comentario y Calificar
+                            </a>
+                        </div>
+                    </div>
+                    i++;
+                }
+                else break;
+            }
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">New message</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="commentForm" asp-action="Comentar" asp-controller="Comentarios" method="post">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                @{
+                                    ComentarioViewModel nueva = new ComentarioViewModel();
+                                    nueva.IdPropiedad = p.IdPropiedad;
+                                }
+                                <input asp-for="@nueva.IdPropiedad" type="hidden"/>
+                                <input type="hidden" asp-for="@nueva.Calificacion" id="rating-value">
+
+                                <div class="mb-3">
+                                    <label for="message-text" class="col-form-label">Ingresa tu comentario:</label>
+                                    <textarea asp-for="@nueva.Comentario" class="form-control" id="message-text"></textarea>
+                                    <span asp-validation-for="@nueva.Comentario" class="text-danger"></span>
+                                </div>
+
+                                <div class="mb-3 d-flex flex-column justify-content-center align-items-center">
+                                    <label class="col-form-label">Calificación:</label>
+                                    <div class="rating">
+                                        <input type="radio" value="5" name="rate" id="star5" asp-for="@nueva.Calificacion" />
+                                        <label title="5 estrellas" for="star5"></label>
+                                        <input type="radio" value="4" name="rate" id="star4" asp-for="@nueva.Calificacion" />
+                                        <label title="4 estrellas" for="star4"></label>
+                                        <input type="radio" value="3" name="rate" id="star3" asp-for="@nueva.Calificacion" />
+                                        <label title="3 estrellas" for="star3"></label>
+                                        <input type="radio" value="2" name="rate" id="star2" asp-for="@nueva.Calificacion" />
+                                        <label title="2 estrellas" for="star2"></label>
+                                        <input type="radio" value="1" name="rate" id="star1" asp-for="@nueva.Calificacion" />
+                                        <label title="1 estrella" for="star1"></label>
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                    <button type="submit" class="btn btn-primary">Enviar Comentario</button>
+                                </div>
+                            </form>
+
+                            <!-- Agregar el script para la interacción de las estrellas -->
+                            <script>
+                                // Obtener todos los inputs de tipo radio de calificación
+                                const ratingInputs = document.querySelectorAll('input[name="rate"]');
+                                const ratingLabels = document.querySelectorAll('label[for^="star"]');
+
+                                // Función para resaltar las estrellas según la calificación seleccionada
+                                function highlightStars(rating) {
+                                ratingLabels.forEach(label => {
+                                const starId = label.getAttribute('for').replace('star', '');
+                                if (starId <= rating) {
+                                label.classList.add('rated');
+                                } else {
+                                label.classList.remove('rated');
+                                }
+                                });
+                                }
+
+                                // Asignar el valor de la calificación y resaltar las estrellas
+                                ratingInputs.forEach(input => {
+                                input.addEventListener('change', (e) => {
+                                const selectedRating = e.target.value;
+                                document.getElementById('rating-value').value = selectedRating; // Actualizar el valor oculto
+                                highlightStars(selectedRating); // Resaltar las estrellas
+                                });
+                                });
+
+                                // Resaltar las estrellas al cargar si ya hay una calificación seleccionada
+                                window.onload = () => {
+                                const selectedRating = document.getElementById('rating-value').value;
+                                if (selectedRating) {
+                                highlightStars(selectedRating);
+                                }
+                                };
+                            </script>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+
+    <script>
+        function showModal() {
+        var myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
+        myModal.show();
+        }
+    </script>
+    @*     <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+        const ratingInputs = document.querySelectorAll('.rating input');
+        const ratingValue = document.getElementById('rating-value');
+
+        ratingInputs.forEach(input => {
+        input.addEventListener('change', (event) => {
+        ratingValue.value = event.target.value;
+        });
+        });
+        });
+    </script> *@
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        document.querySelector('form').addEventListener('submit', function (event) {
+            const comentario = document.getElementById('message-text');
+            if (!comentario.value.trim()) {
+                event.preventDefault(); // Evita que el formulario se envíe
+                alert("Por favor, ingrese un comentario.");
+                comentario.focus(); // Coloca el foco en el textarea
+            }
+        });
+    </script>
+    <script>
+        document.getElementById('commentForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Evita el comportamiento por defecto del formulario
+
+            const formData = new FormData(this);
+
+            fetch(this.action, {
+                method: this.method,
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.text())
+            .then(data => {
+                // Aquí puedes manejar la respuesta del servidor
+                console.log('Comentario enviado:', data);
+
+                // Mostrar una alerta de éxito
+                alert('¡Comentario enviado exitosamente!');
+
+                // Cierra el modal si es necesario
+                const modal = bootstrap.Modal.getInstance(document.getElementById('exampleModal'));
+                modal.hide();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Mostrar una alerta de error
+                alert('Hubo un error al enviar el comentario. Por favor, intenta nuevamente.');
+            });
+        });
+    </script>
+
+</body>
+</html>

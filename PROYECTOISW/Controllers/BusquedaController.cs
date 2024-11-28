@@ -67,34 +67,6 @@ namespace PROYECTOISW.Controllers
             
             model.Publicaciones = publicaciones;
             return View("Busqueda", model);
-            
-            #region Franco
-            //var propiedades = _contexto.Propiedades.AsQueryable();  //Recuperar todas las propiedades de base de datos
-            //if (model.MinPrecio != null)
-            //{
-            //    propiedades = propiedades.Where(p => p.PrecioRenta >= model.MinPrecio.Value);
-            //}
-            //if (model.MaxPrecio != null)
-            //{
-            //    propiedades = propiedades.Where(p => p.PrecioRenta >= model.MaxPrecio.Value);
-            //}
-            //if (model.TipoInmueble != null) 
-            //{
-            //    propiedades = propiedades.Where(p => p.TipoPropiedad == model.TipoInmueble);
-            //}
-            //if (model.DistanciaAEscuela != null) 
-            //{
-            //    propiedades = propiedades.Where(p => p.Distancia <= model.DistanciaAEscuela);
-            //}
-            //var propiedadesList = await propiedades.ToListAsync();  
-            //foreach (var currPropiedad in propiedades) 
-            //{
-            //    var primerImagenPropiedad = await _contexto.Imagenes.FirstOrDefaultAsync(f => f.IdPropiedad == currPropiedad.IdPropiedad);
-            //    var mimeType = MimeTypeHelper.GetMimeType(primerImagenPropiedad.Imagen);
-            //    model.ListaDePropiedades.Add((primerImagenPropiedad.Imagen, currPropiedad, mimeType));
-            //}
-            //return View(model);
-            #endregion
         }
         #endregion
 
@@ -105,6 +77,41 @@ namespace PROYECTOISW.Controllers
             //Buscar la propiedad con las sus imagenes
             Propiedade detalles = await _contexto.Propiedades.Include(i => i.Imagenes).FirstAsync(d=>d.IdPropiedad == id);
             return View(detalles);
+        }
+        #endregion
+        #region Rentar
+        [HttpGet]
+        public async Task <IActionResult> Rentar(int idPropiedad)
+        {
+            var claimsIdentity = User.Identity as ClaimsIdentity;
+            var idUser = claimsIdentity?.FindFirst("Id_Usuario")?.Value;
+            Rentada rentar = new Rentada();
+            rentar.IdPropiedad = idPropiedad;
+            rentar.IdUsuario = Convert.ToInt32(idUser);
+            await _contexto.Rentadas.AddAsync(rentar);
+            await _contexto.SaveChangesAsync();
+            //Actualiza el estado de la propiedad en la tabla de propiedades
+            await _contexto.Propiedades
+                    .Where(id => id.IdPropiedad == idPropiedad)
+                    .ExecuteUpdateAsync(setters => setters.SetProperty(e => e.Estado, "D"));
+            await _contexto.SaveChangesAsync();
+            return RedirectToAction("Rentadas");
+        }
+        #endregion
+
+        #region Alquiladas
+        [HttpGet]
+        public async Task <IActionResult> Rentadas()
+        {
+            var claimsIdentity = User.Identity as ClaimsIdentity;
+            var idUser = claimsIdentity?.FindFirst("Id_Usuario")?.Value;
+            var rentadas = await _contexto.Rentadas
+                .Where(f => f.IdUsuario == int.Parse(idUser))
+                .Include(f => f.IdPropiedadNavigation) // Asegúrate de que 'Propiedad' es la navegación correcta
+                .ThenInclude(p => p.Imagenes) // Asegúrate de que 'Imagenes' es la navegación correcta
+                .Select(f => f.IdPropiedadNavigation)
+                .ToListAsync();
+            return View(rentadas);
         }
         #endregion
     }
