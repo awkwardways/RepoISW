@@ -27,45 +27,23 @@ namespace PROYECTOISW.Controllers
         [HttpGet]
         public async Task<IActionResult> Busqueda()
         {
-            var publicaciones = await _contexto.Propiedades.Include(p => p.Imagenes).ToListAsync();
+            var publicaciones = await _contexto.Propiedades.Where(e=>e.Estado != "D").Include(p => p.Imagenes).ToListAsync();
             var viewModel = new CompartidoViewModel();
             viewModel.Publicaciones = new List<Propiedade>();
             viewModel.Buscar = new BusquedaViewModel();
 
             viewModel.Publicaciones = publicaciones;
             return View(viewModel);
-            #region Franco
-            //var model = new BusquedaViewModel
-            //{
-            //    TiposDePropiedad = new List<SelectListItem>
-            //    {
-            //        new SelectListItem { Value = "Casa", Text = "Casa" },
-            //        new SelectListItem { Value = "Departamento", Text = "Departamento" },
-            //        new SelectListItem { Value = "Habitacion", Text = "Habitación"}
-            //    },
-            //    ListaDePropiedades = new List<(byte[] rawImagen, Propiedade propiedad, string mimeType)>()
-            //};
-            ////BusquedaViewModel viewModel = new BusquedaViewModel();
-            ////List<(byte[] rawImagen, Propiedade propiedad, string TipoImagen)> cardsPropiedades = new List<(byte[] rawImagen, Propiedade propiedad, string TipoImagen)>();
-            //var propiedades = await _contexto.Propiedades.ToListAsync();  // Recuperar todas las propiedades disponibles en la base de datos.
-            //foreach (var currPropiedad in propiedades) 
-            //{
-            //    var primerImagenPropiedad = await _contexto.Imagenes.FirstOrDefaultAsync(f => f.IdPropiedad == currPropiedad.IdPropiedad);
-            //    var mimeType = MimeTypeHelper.GetMimeType(primerImagenPropiedad.Imagen);
-            //    model.ListaDePropiedades.Add((primerImagenPropiedad.Imagen, currPropiedad, mimeType));
-            //}
-            ////cardsPropiedades.
-            ///
-            #endregion
         }
         [HttpPost]
         public async Task<IActionResult> Busqueda(CompartidoViewModel model) 
         {
             //Agregar filtros
             var publicaciones = await _contexto.Propiedades
-                    .Where(p => p.TipoPropiedad == model.Buscar.TipoInmueble &&
+                    .Where(p => p.TipoPropiedad == model.Buscar.TipoInmueble && 
                     p.Distancia >= model.Buscar.DistanciaAEscuela &&
-                    (p.PrecioRenta <= model.Buscar.MaxPrecio && p.PrecioRenta >= model.Buscar.MinPrecio))
+                    (p.PrecioRenta <= model.Buscar.MaxPrecio && p.PrecioRenta >= model.Buscar.MinPrecio) &&
+                    p.Estado != "D")
                     .Include(p => p.Imagenes)
                     .ToListAsync();
             
