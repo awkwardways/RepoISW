@@ -182,6 +182,13 @@
                 <button type="submit" class="btn-primary">Publicar propiedad</button>
             </div>
         </form>
+        <!-- Mensaje de error -->
+        @if (!string.IsNullOrEmpty(ViewBag.Imagenes))
+        {
+            <div class="alert alert-danger mt-3" role="alert">
+                @ViewBag.Imagenes
+            </div>
+        }
     </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

@@ -44,12 +44,6 @@ namespace PROYECTOISW.Controllers
         [HttpPost]
         public async Task<IActionResult> CrearPropiedad(CrearPropiedadViewModel nuevo)
         {
-
-            //if (!int.TryParse(nuevo.PrecioRenta.ToString(), out int precioRenta))
-            //{
-            //    ModelState.AddModelError("PrecioRenta", "El precio de renta debe ser un valor numérico."); return View(nuevo);
-            //}
-
             if (ModelState.IsValid)
             {
                 //Deseralizar una cookie
@@ -77,6 +71,12 @@ namespace PROYECTOISW.Controllers
                     };
                     _contexto.Propiedades.Add(crear);
                     await _contexto.SaveChangesAsync();
+                    //Valida que no sean más de 10 imagenes
+                    if (nuevo.archivosImagenes.Count > 10)
+                    {
+                        ViewBag.Imagenes = "No se permiten más de 10 imagenes";
+                        return View(nuevo);
+                    }
 
                     if (nuevo.archivosImagenes != null && nuevo.archivosImagenes.Count > 0)
                     {
@@ -98,7 +98,7 @@ namespace PROYECTOISW.Controllers
                         }
                         await _contexto.SaveChangesAsync();
                     }
-                    return RedirectToAction("Index", "Home", new { id = id, opcion = 0});
+                    return RedirectToAction("Index", "Home", new { id = id, opcion = 0 });
                 }
             }
             var errors = ModelState.Values.SelectMany(v => v.Errors);
@@ -159,6 +159,7 @@ namespace PROYECTOISW.Controllers
                 editar.Distancia = propiedades.Distancia;
                 editar.CondicionesEspeciales = propiedades.CondicionesEspeciales;
                 editar.Data = new List<byte[]>();
+
                 foreach (var item in propiedades.Imagenes)
                 {
                     editar.Data.Add(item.Imagen);
@@ -177,6 +178,13 @@ namespace PROYECTOISW.Controllers
         {
             if (ModelState.IsValid)
             {
+                var imagenes = await _contexto.Imagenes.Where(i => i.IdPropiedad == editar.Id).ToListAsync();
+                if ( imagenes.Count == 10)
+                {
+                    ViewBag.Imagenes = "El número maximo de imagenes por proiedad es 10.";
+                    return View(editar);
+                }
+
                 await _contexto.Propiedades
                        .Where(d => d.IdPropiedad == editar.Id)
                        .ExecuteUpdateAsync(setters =>
@@ -230,7 +238,7 @@ namespace PROYECTOISW.Controllers
             var e = _contexto.Imagenes.Where(w => w.IdPropiedad == id).ToList();
             if (e.Any())
             {
-                foreach(var el in e)
+                foreach (var el in e)
                 {
                     _contexto.Imagenes.Remove(el);
                 }
@@ -246,7 +254,7 @@ namespace PROYECTOISW.Controllers
 
         #region Pausar Publicacioon
         [HttpGet]
-        public async Task <IActionResult> Pausar(int id)
+        public async Task<IActionResult> Pausar(int id)
         {
             await _contexto.Propiedades.Where(i => i.IdPropiedad == id)
                 .ExecuteUpdateAsync(setters => setters.SetProperty(s => s.Estado, "S"));
@@ -257,10 +265,10 @@ namespace PROYECTOISW.Controllers
 
         #region Contactar
         [HttpGet]
-        public async Task<IActionResult> Contactar (int idUser, int idPropiedad)
+        public async Task<IActionResult> Contactar(int idUser, int idPropiedad)
         {
             //Buscamos el usuario en la tabla usuarios para recuperar su correo
-            var emailProp = await _contexto.Usuarios.Where(p => p.IdUsuario == idUser).Select(c=>c.CorreoElectronico).FirstOrDefaultAsync();
+            var emailProp = await _contexto.Usuarios.Where(p => p.IdUsuario == idUser).Select(c => c.CorreoElectronico).FirstOrDefaultAsync();
             if (emailProp != null)
             {
                 //Obtener el correo del usuario
