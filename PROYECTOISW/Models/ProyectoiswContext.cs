@@ -17,6 +17,8 @@ public partial class ProyectoiswContext : DbContext
 
     public virtual DbSet<Cita> Citas { get; set; }
 
+    public virtual DbSet<Duda> Dudas { get; set; }
+
     public virtual DbSet<Favorito> Favoritos { get; set; }
 
     public virtual DbSet<Imagene> Imagenes { get; set; }
@@ -26,6 +28,8 @@ public partial class ProyectoiswContext : DbContext
     public virtual DbSet<Rentada> Rentadas { get; set; }
 
     public virtual DbSet<Reseña> Reseñas { get; set; }
+
+    public virtual DbSet<Respuesta> Respuestas { get; set; }
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
 
@@ -55,6 +59,24 @@ public partial class ProyectoiswContext : DbContext
                 .HasForeignKey(d => d.IdUsuario)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Citas__Id_Usuari__4C6B5938");
+        });
+
+        modelBuilder.Entity<Duda>(entity =>
+        {
+            entity.HasKey(e => e.IdDuda).HasName("PK__Dudas__130325564B47EA1B");
+
+            entity.Property(e => e.IdDuda).HasColumnName("Id_Duda");
+            entity.Property(e => e.Duda1)
+                .HasMaxLength(300)
+                .IsUnicode(false)
+                .HasColumnName("Duda");
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.IdPropiedad).HasColumnName("Id_Propiedad");
+
+            entity.HasOne(d => d.IdPropiedadNavigation).WithMany(p => p.Duda)
+                .HasForeignKey(d => d.IdPropiedad)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__Dudas__Id_Propie__681373AD");
         });
 
         modelBuilder.Entity<Favorito>(entity =>
@@ -183,6 +205,24 @@ public partial class ProyectoiswContext : DbContext
                 .HasForeignKey(d => d.IdUsuario)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Reseñas__Id_Usua__47A6A41B");
+        });
+
+        modelBuilder.Entity<Respuesta>(entity =>
+        {
+            entity.HasKey(e => e.IdRespuesta).HasName("PK__Respuest__4F54537D776B4D22");
+
+            entity.Property(e => e.IdRespuesta).HasColumnName("Id_Respuesta");
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime");
+            entity.Property(e => e.IdDuda).HasColumnName("Id_Duda");
+            entity.Property(e => e.Respuesta1)
+                .HasMaxLength(300)
+                .IsUnicode(false)
+                .HasColumnName("Respuesta");
+
+            entity.HasOne(d => d.IdDudaNavigation).WithMany(p => p.Respuesta)
+                .HasForeignKey(d => d.IdDuda)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__Respuesta__Id_Du__6AEFE058");
         });
 
         modelBuilder.Entity<Usuario>(entity =>

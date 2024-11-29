@@ -114,5 +114,31 @@ namespace PROYECTOISW.Servicios
                 Console.WriteLine(ex.Message);
             }
         }
+        public void EnviarCorreo(string destino)
+        {
+            try
+            {
+                MailMessage msg = new MailMessage("hernandez.granados.johan.ipn@gmail.com", destino);
+                msg.IsBodyHtml = true;
+                msg.Subject = "Interesado en tu propiedad";
+                string body = $"" +
+                    $"Tiene una nueva duda en su propiedad";
+                msg.Body = body;
+
+                SmtpClient smtp = new SmtpClient();
+                smtp.Host = "smtp.gmail.com";
+                smtp.Port = 587;
+                smtp.EnableSsl = true;
+                smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                smtp.UseDefaultCredentials = false;
+                smtp.Credentials = new NetworkCredential("hernandez.granados.johan.ipn@gmail.com", "kzvl kqnd krhb uwyn");
+                smtp.Send(msg);
+                smtp.Dispose();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
     }
 }

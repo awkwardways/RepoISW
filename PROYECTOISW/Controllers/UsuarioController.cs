@@ -129,8 +129,13 @@ namespace PROYECTOISW.Controllers
                     new Claim("Tipo", usuario.Tipo),
                     new Claim(ClaimTypes.Name, usuario.NombreCompleto),
                     new Claim(ClaimTypes.Email, usuario.CorreoElectronico),
-                    new Claim(ClaimTypes.MobilePhone, usuario.Telefono)
+                    new Claim(ClaimTypes.MobilePhone, usuario.Telefono),
+                    new Claim(ClaimTypes.Role, usuario.Tipo.ToString())
                 };
+                //Roles
+                
+                   
+                
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,

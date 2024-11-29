@@ -37,6 +37,8 @@ public partial class Propiedade
 
     public virtual ICollection<Cita> Cita { get; set; } = new List<Cita>();
 
+    public virtual ICollection<Duda> Duda { get; set; } = new List<Duda>();
+
     public virtual ICollection<Favorito> Favoritos { get; set; } = new List<Favorito>();
 
     public virtual Usuario IdUsuarioNavigation { get; set; } = null!;

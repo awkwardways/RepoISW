@@ -10,6 +10,7 @@ using Microsoft.Identity.Client;
 using System.Security.Claims;
 using PROYECTOISW.Servicios;
 using PROYECTOISW.Models.ViewModel.ComentariosViewModel;
+using PROYECTOISW.Models.ViewModel.ContactarViewModel;
 
 namespace PROYECTOISW.Controllers
 {
@@ -116,6 +117,58 @@ namespace PROYECTOISW.Controllers
 
             model.Propiedad = r;
             return View(model);
+        }
+        #endregion
+
+        #region Contactar
+
+        int i = 0;
+        [HttpGet]
+        // Método Contactar
+        public async Task<IActionResult> Contactar(int IdPropiedad)
+        {
+            var dudasConRespuestas = await _contexto.Dudas
+                .Where(d => d.IdPropiedad == IdPropiedad)
+                .Include(d => d.Respuesta)
+                .ToListAsync();
+
+            if (dudasConRespuestas.Count == 0)
+            {
+                ContactarViewModel n = new ContactarViewModel
+                {
+                    IdPropiedad = IdPropiedad
+                };
+                return PartialView("~/Views/Busqueda/CrearDuda.cshtml", n);
+            }
+
+            return View(dudasConRespuestas);
+        }
+        [HttpPost]
+        // Método CrearDuda
+        public async Task<IActionResult> CrearDuda(ContactarViewModel nueva)
+        {
+            if (ModelState.IsValid)
+            {
+                Duda n = new Duda();
+                n.Duda1 = nueva.Duda;
+                n.IdPropiedad = nueva.IdPropiedad;
+                n.FechaCreacion = DateTime.Now;
+                await _contexto.Dudas.AddAsync(n);
+                await _contexto.SaveChangesAsync();
+                //Mandar correo de alerta
+                var emailProp = await _contexto.Propiedades
+                    .Where(p => p.IdPropiedad == n.IdPropiedad)
+                    .Include(p => p.IdUsuarioNavigation)
+                    .Select(p => p.IdUsuarioNavigation.CorreoElectronico) // Asegúrate de que 'Email' es el nombre correcto de la propiedad
+                    .FirstOrDefaultAsync();
+                if (emailProp != null)
+                {
+                    //Manda el correo
+                    _servicioC.EnviarCorreo(emailProp);
+                }
+                return RedirectToAction(nameof(Contactar), new { IdPropiedad = nueva.IdPropiedad });
+            }
+            return View(nameof(CrearDuda));
         }
         #endregion
     }

@@ -33,6 +33,7 @@ namespace PROYECTOISW.Controllers
             _servicios = servicios;
         }
         #region Crear
+        [Authorize(Roles = "P")]
         [HttpGet]
         public IActionResult CrearPropiedad()
         {

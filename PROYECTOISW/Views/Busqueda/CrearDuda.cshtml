@@ -1,0 +1,23 @@
+﻿@model PROYECTOISW.Models.ViewModel.ContactarViewModel.ContactarViewModel
+
+<h1>Soy el formulario de dudas</h1>
+
+<form asp-action="CrearDuda" asp-controller="Busqueda" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input asp-for="IdPropiedad" type="hidden"/>
+    <div class="mb-4">
+        <label asp-for="Duda" class="form-label"></label>
+        <input asp-for="Duda" class="form-control" type="text" />
+        <span asp-validation-for="Duda" class="text-danger"></span>
+    </div>
+    <div class="mb-4">
+        <button type="submit" class="btn btn-success">Publicar</button>
+    </div>
+</form>
+
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
