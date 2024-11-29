@@ -92,7 +92,7 @@ namespace PROYECTOISW.Servicios
                 msg.IsBodyHtml = true;
                 msg.Subject = "Interesado en tu propiedad";
                 string body = $"" +
-                    $"Hay un interesado en tu propiedad con folio de registro{idPropiedad}.\n" +
+                    $"Se ha iniciado  proceso  de    renta, comunicarse  con  alumno que  siga  el proceso de manera directa  gracias por  usar nuestro servicio" +
                     $"Datos de la persona interesada: \n" +
                     $"Nombre Completo: {user.NombreCompleto}\n" +
                     $"Teléfono: {user.Telefono}\n" +

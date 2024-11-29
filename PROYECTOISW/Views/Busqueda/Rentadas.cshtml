@@ -1,5 +1,4 @@
-﻿@model List<Propiedade>
-@using PROYECTOISW.Models.ViewModel.ComentariosViewModel
+﻿@model PROYECTOISW.Models.ViewModel.ComentarioPropiedadViewModel
 @{
     Layout = null;
 }
@@ -55,7 +54,7 @@
     <a id="resultados"></a>
     @{
         int i;
-        foreach (var p in Model)
+        foreach (var p in Model.Propiedad)
         {
             i = 0;
             @foreach (var e in p.Imagenes)
@@ -67,7 +66,7 @@
                             var base64 = Convert.ToBase64String(e.Imagen);
                             var imgSrc = $"data:image/jpeg;base64,{base64}";
                         }
-                        <a href="@Url.Action("Detalles","Busqueda", new {id = p.IdPropiedad})" target="_blank">
+                        <a href="@Url.Action("Detalles","Busqueda", new {id = e.IdPropiedad})" target="_blank">
                             <img src="@imgSrc" alt="Imagen de la propiedad" style="width:100%; height:auto" />
                         </a>
                         <div class="card-body">
@@ -79,95 +78,94 @@
                             </a>
                         </div>
                     </div>
+                    <!--formulario-->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">New message</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="commentForm" asp-action="Comentar" asp-controller="Comentarios" method="post">
+                                        <input asp-for="Comentario.IdPropiedad" type="hidden" value="@p.IdPropiedad">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                                        <input asp-for="Comentario.IdPropiedad" type="hidden" />
+                                        <input type="hidden" asp-for="Comentario.Calificacion" id="rating-value">
+
+                                        <div class="mb-3">
+                                            <label for="message-text" class="col-form-label">Ingresa tu comentario:</label>
+                                            <textarea asp-for="Comentario.Comentario" class="form-control" id="message-text"></textarea>
+                                            <span asp-validation-for="Comentario.Comentario" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="mb-3 d-flex flex-column justify-content-center align-items-center">
+                                            <label class="col-form-label">Calificación:</label>
+                                            <div class="rating">
+                                                <input type="radio" value="5" name="rate" id="star5"/>
+                                                <label title="5 estrellas" for="star5"></label>
+                                                <input type="radio" value="4" name="rate" id="star4"/>
+                                                <label title="4 estrellas" for="star4"></label>
+                                                <input type="radio" value="3" name="rate" id="star3"/>
+                                                <label title="3 estrellas" for="star3"></label>
+                                                <input type="radio" value="2" name="rate" id="star2" />
+                                                <label title="2 estrellas" for="star2"></label>
+                                                <input type="radio" value="1" name="rate" id="star1"/>
+                                                <label title="1 estrella" for="star1"></label>
+                                            </div>
+                                            <input asp-for="Comentario.Calificacion" type="hidden"/>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                            <button type="submit" class="btn btn-primary">Enviar Comentario</button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <!-- Agregar el script para la interacción de las estrellas -->
+                                <script>
+                                    // Obtener todos los inputs de tipo radio de calificación
+                                    const ratingInputs = document.querySelectorAll('input[name="rate"]');
+                                    const ratingLabels = document.querySelectorAll('label[for^="star"]');
+
+                                    // Función para resaltar las estrellas según la calificación seleccionada
+                                    function highlightStars(rating) {
+                                        ratingLabels.forEach(label => {
+                                            const starId = label.getAttribute('for').replace('star', '');
+                                            if (starId <= rating) {
+                                                label.classList.add('rated');
+                                            } else {
+                                                label.classList.remove('rated');
+                                            }
+                                        });
+                                    }
+
+                                    // Asignar el valor de la calificación y resaltar las estrellas
+                                    ratingInputs.forEach(input => {
+                                        input.addEventListener('change', (e) => {
+                                            const selectedRating = e.target.value;
+                                            document.getElementById('rating-value').value = selectedRating; // Actualizar el valor oculto
+                                            highlightStars(selectedRating); // Resaltar las estrellas
+                                        });
+                                    });
+
+                                    // Resaltar las estrellas al cargar si ya hay una calificación seleccionada
+                                    window.onload = () => {
+                                        const selectedRating = document.getElementById('rating-value').value;
+                                        if (selectedRating) {
+                                            highlightStars(selectedRating);
+                                        }
+                                    };
+                                </script>
+                            </div>
+                        </div>
+                    </div>
                     i++;
                 }
                 else break;
             }
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">New message</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="commentForm" asp-action="Comentar" asp-controller="Comentarios" method="post">
-                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                @{
-                                    ComentarioViewModel nueva = new ComentarioViewModel();
-                                    nueva.IdPropiedad = p.IdPropiedad;
-                                }
-                                <input asp-for="@nueva.IdPropiedad" type="hidden"/>
-                                <input type="hidden" asp-for="@nueva.Calificacion" id="rating-value">
-
-                                <div class="mb-3">
-                                    <label for="message-text" class="col-form-label">Ingresa tu comentario:</label>
-                                    <textarea asp-for="@nueva.Comentario" class="form-control" id="message-text"></textarea>
-                                    <span asp-validation-for="@nueva.Comentario" class="text-danger"></span>
-                                </div>
-
-                                <div class="mb-3 d-flex flex-column justify-content-center align-items-center">
-                                    <label class="col-form-label">Calificación:</label>
-                                    <div class="rating">
-                                        <input type="radio" value="5" name="rate" id="star5" asp-for="@nueva.Calificacion" />
-                                        <label title="5 estrellas" for="star5"></label>
-                                        <input type="radio" value="4" name="rate" id="star4" asp-for="@nueva.Calificacion" />
-                                        <label title="4 estrellas" for="star4"></label>
-                                        <input type="radio" value="3" name="rate" id="star3" asp-for="@nueva.Calificacion" />
-                                        <label title="3 estrellas" for="star3"></label>
-                                        <input type="radio" value="2" name="rate" id="star2" asp-for="@nueva.Calificacion" />
-                                        <label title="2 estrellas" for="star2"></label>
-                                        <input type="radio" value="1" name="rate" id="star1" asp-for="@nueva.Calificacion" />
-                                        <label title="1 estrella" for="star1"></label>
-                                    </div>
-                                </div>
-
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                    <button type="submit" class="btn btn-primary">Enviar Comentario</button>
-                                </div>
-                            </form>
-
-                            <!-- Agregar el script para la interacción de las estrellas -->
-                            <script>
-                                // Obtener todos los inputs de tipo radio de calificación
-                                const ratingInputs = document.querySelectorAll('input[name="rate"]');
-                                const ratingLabels = document.querySelectorAll('label[for^="star"]');
-
-                                // Función para resaltar las estrellas según la calificación seleccionada
-                                function highlightStars(rating) {
-                                ratingLabels.forEach(label => {
-                                const starId = label.getAttribute('for').replace('star', '');
-                                if (starId <= rating) {
-                                label.classList.add('rated');
-                                } else {
-                                label.classList.remove('rated');
-                                }
-                                });
-                                }
-
-                                // Asignar el valor de la calificación y resaltar las estrellas
-                                ratingInputs.forEach(input => {
-                                input.addEventListener('change', (e) => {
-                                const selectedRating = e.target.value;
-                                document.getElementById('rating-value').value = selectedRating; // Actualizar el valor oculto
-                                highlightStars(selectedRating); // Resaltar las estrellas
-                                });
-                                });
-
-                                // Resaltar las estrellas al cargar si ya hay una calificación seleccionada
-                                window.onload = () => {
-                                const selectedRating = document.getElementById('rating-value').value;
-                                if (selectedRating) {
-                                highlightStars(selectedRating);
-                                }
-                                };
-                            </script>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
         }
     }
 
@@ -177,18 +175,6 @@
         myModal.show();
         }
     </script>
-    @*     <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
-        const ratingInputs = document.querySelectorAll('.rating input');
-        const ratingValue = document.getElementById('rating-value');
-
-        ratingInputs.forEach(input => {
-        input.addEventListener('change', (event) => {
-        ratingValue.value = event.target.value;
-        });
-        });
-        });
-    </script> *@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

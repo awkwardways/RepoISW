@@ -12,75 +12,191 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-grid.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/PROYECTOISW.styles.css" asp-append-version="true" />
+    <style>
+        body {
+            background-color: #f9f9f9;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        h1,
+        h4 {
+            color: #333;
+        }
+
+        p {
+            font-size: 1rem;
+            color: #555;
+        }
+
+        .carousel-item img {
+            border-radius: 15px; /* Bordes redondeados para las imágenes */
+            transition: transform 0.5s ease;
+        }
+
+            .carousel-item img:hover {
+                transform: scale(1.05);
+            }
+
+        .titulo-decorado {
+            border: 3px solid #28a745;
+            border-radius: 10px; /* Bordes redondeados */
+            padding: 10px 20px;
+            background-color: #e9f7e5;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            color: #2c6e2f;
+            transition: all 0.3s ease;
+        }
+
+            .titulo-decorado:hover {
+                background-color: #d4f0c2;
+                border-color: #218838;
+                box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+            }
+
+        .btn-success {
+            background-color: #28a745;
+            border-color: #28a745;
+            font-size: 1rem;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .btn-success::after {
+                content: '';
+                position: absolute;
+                top: -50%;
+                left: -50%;
+                width: 200%;
+                height: 200%;
+                background: rgba(255, 255, 255, 0.3);
+                transform: rotate(45deg);
+                transition: all 0.5s ease-in-out;
+                z-index: 1;
+                opacity: 0;
+            }
+
+            .btn-success:hover::after {
+                top: 0%;
+                left: 0%;
+                opacity: 1;
+            }
+
+            .btn-success:hover {
+                background-color: #218838;
+                border-color: #1e7e34;
+            }
+
+        .info-section {
+            padding: 10px 20px;
+        }
+
+            .info-section h4 {
+                font-size: 1.25rem;
+                font-weight: bold;
+                margin-top: 15px;
+                margin-bottom: 5px;
+            }
+
+            .info-section p {
+                margin-bottom: 10px;
+            }
+
+        .button-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+            .button-container a {
+                margin: 5px;
+            }
+
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            filter: invert(1);
+        }
+    </style>
 </head>
 <body>
-    <div class="tarjeta">
-        <h2>@Model.Titulo</h2>
-        <div class="descripcion">
-            <h4>Descripción</h4>
-            <p>@Model.Descripcion</p>
-        </div>
-        <div class="tipo">
-            <h4>Tipo de propiedad</h4>
-            <p>@Model.TipoPropiedad</p>
-        </div>
-        <div class="superficie">
-            <h4>Superficie</h4>
-            <p>@Model.Superficie</p>
-        </div>
-        <div class="numeroh">
-            <h4>Número de Habitaciones</h4>
-            <p>@Model.NumeroHabitaciones</p>
-        </div>
-        <div class="numerob">
-            <h4>Número de Baños</h4>
-            <p>@Model.NumeroBaños</p>
-        </div>
-        <div class="servicios">
-            <h4>Servicios Incluidos</h4>
-            <p>@Model.Servicios</p>
-        </div>
-        <div class="descripcion">
-            <h4>Descripción</h4>
-            <p>@Model.Descripcion</p>
-        </div>
-        <div class="distancia">
-            <h4>Distancia a ESIME culhuácan</h4>
-            <p>@Model.Distancia</p>
-        </div>
-        <div class="condiciones">
-            <h4>Condiciones Especiales</h4>
-            <p>@Model.CondicionesEspeciales</p>
-        </div>
-        <!--Mostrar las imagenes-->
-        <div id="carouselExample" class="carousel slide">
-            <div class="carousel-inner">
-                @{
-                    int a = 0;
-                    foreach (var i in Model.Imagenes)
-                    {
-                        var base64 = Convert.ToBase64String(i.Imagen);
-                        var imgSrc = $"data:image/jpeg;base64,{base64}";
-                        <div class="carousel-item @(a == 0 ? "active" : "") ">
+    <div class="container mt-5">
+        <!-- Título decorado -->
+        <h1 class="text-center display-5 fw-bold mb-4 titulo-decorado">@Model.Titulo</h1>
 
-                            <img src="@imgSrc" class="d-block w-100" alt="...">
-                        </div>
-                        a++;
-                    }
-                }
+        <div class="row">
+            <!-- Detalles de la propiedad -->
+            <div class="col-md-6 info-section">
+                <h4>Descripción</h4>
+                <p>@Model.Descripcion</p>
+
+                <h4>Tipo de propiedad</h4>
+                <p>@Model.TipoPropiedad</p>
+
+                <h4>Precio de renta mensual</h4>
+                <p>@Model.PrecioRenta</p>
+
+                <h4>Superficie</h4>
+                <p>@Model.Superficie</p>
+
+                <h4>Número de habitaciones</h4>
+                <p>@Model.NumeroHabitaciones</p>
+
+                <h4>Número de baños</h4>
+                <p>@Model.NumeroBaños</p>
+
+                <h4>Servicios incluidos</h4>
+                <p>@Model.Servicios</p>
+
+                <h4>Dirección completa</h4>
+                <p>@Model.Direccion</p>
+
+                <h4>Distancia a ESIME Culhuacán</h4>
+                <p>@Model.Distancia</p>
+
+                <h4>Condiciones especiales</h4>
+                <p>@Model.CondicionesEspeciales</p>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
-        <a href="#" id="contactar-btn" class="btn btn-success">Contactar a Propietario</a>
-        <a href="@Url.Action("Rentar","Busqueda", new { idPropiedad = Model.IdPropiedad })" class="btn btn-success">Rentar</a>
 
+            <!-- Fotos de la propiedad -->
+            <div class="col-md-6">
+                <div id="carouselExample" class="carousel slide">
+                    <div class="carousel-inner">
+                        @{
+                            int a = 0;
+                            foreach (var i in Model.Imagenes)
+                            {
+                                var base64 = Convert.ToBase64String(i.Imagen);
+                                var imgSrc = $"data:image/jpeg;base64,{base64}";
+                                <div class="carousel-item @(a == 0 ? "active" : "")">
+                                    <img src="@imgSrc" class="d-block w-100" alt="Imagen de la propiedad">
+                                </div>
+                                a++;
+                            }
+                        }
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Anterior</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Siguiente</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <a href="#" id="contactar-btn" class="btn btn-success">Rentar</a>
+        <a href="@Url.Action("Rentar","Busqueda", new { idPropiedad = Model.IdPropiedad })" class="btn btn-success">Contactar</a>
+        <a href="@Url.Action("Mostrar","Comentarios", new { idP = Model.IdPropiedad} )" class="btn btn-success" target="_blank">Reseñas</a>
         <!-- Modal -->
         <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -98,8 +214,6 @@
                 </div>
             </div>
         </div>  
-        <!--Botones de contactar y Rentar-->
-      @*   <a href="@Url.Action("Contactar","Propiedades", new { idUser = Model.IdUsuario, idPropiedad = Model.IdPropiedad})" class="btn btn-success">Contactar a Propietario</a> *@
     </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -110,7 +224,7 @@
                 event.preventDefault(); // Evita que el enlace redirija o recargue la página
 
                 $.ajax({
-                    url: '@Url.Action("Contactar", "Propiedades")',
+                    url: '@Url.Action("Rentar", "Busqueda")',
                     type: 'GET',
                     data: {
                         idUser: '@Model.IdUsuario',
