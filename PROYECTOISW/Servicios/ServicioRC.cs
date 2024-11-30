@@ -140,5 +140,9 @@ namespace PROYECTOISW.Servicios
                 Console.WriteLine(ex.Message);
             }
         }
+        public bool BuscarDudas(int id)
+        {
+            return true;
+        }
     }
 }

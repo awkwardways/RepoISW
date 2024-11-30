@@ -15,8 +15,6 @@
 <body>
     <div class="d-flex justify-content-center align-items-center vh-100" style="background-color: white; height:90%">
         <div class="login-container p-4" style="width: 100%; max-width: 600px;">
-
-            <!-- Ajustar ancho máximo -->
             <h1 class="text-center mb-4">Iniciar Sesión</h1>
             <form asp-action="IniciarSesion">
                 <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
@@ -24,14 +22,14 @@
                 <!-- Campo de Correo -->
                 <div class="mb-4">
                     <label asp-for="Correo" class="form-label"></label>
-                    <input asp-for="Correo" class="form-control form-control-lg" type="email" placeholder="Ingresar Correo" />
+                    <input asp-for="Correo" class="form-control form-control-lg" type="email" placeholder="Ingresar Correo" id="correo" />
                     <span asp-validation-for="Correo" class="text-danger"></span>
                 </div>
 
                 <!-- Campo de Contraseña -->
                 <div class="mb-4">
                     <label asp-for="Contraseña" class="form-label"></label>
-                    <input asp-for="Contraseña" class="form-control form-control-lg" type="password" placeholder="Ingresar Contraseña" />
+                    <input asp-for="Contraseña" class="form-control form-control-lg" type="password" placeholder="Ingresar Contraseña" id="contraseña" />
                     <span asp-validation-for="Contraseña" class="text-danger"></span>
                 </div>
 
@@ -42,12 +40,12 @@
 
                 <!-- Botón de Ingresar -->
                 <div class="mb-4">
-                    <button type="submit" class="btn btn-lg w-100" style="background-color: #28a745; color: white;">Ingresar</button>
+                    <button type="submit" class="btn btn-lg w-100" style="background-color: #28a745; color: white;" id="entrar" disabled>Entrar</button>
                 </div>
 
                 <!-- Crear Cuenta -->
                 <div class="text-center">
-                    <a asp-action="CrearUsuario" class="text-decoration-none" style="color: #28a745;">Crear Cuenta</a>
+                    <a asp-action="CrearUsuario" class="btn btn-success">Crear Cuenta</a>
                 </div>
 
                 <!-- Mensaje de error -->
@@ -64,12 +62,23 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const correo = document.getElementById('correo');
+            const contraseña = document.getElementById('contraseña');
+            const entrar = document.getElementById('entrar');
+
+            function checkInputs() {
+                if (correo.value.trim() !== '' && contraseña.value.trim() !== '') {
+                    entrar.disabled = false;
+                } else {
+                    entrar.disabled = true;
+                }
+            }
+
+            correo.addEventListener('input', checkInputs);
+            contraseña.addEventListener('input', checkInputs);
+        });
+    </script>
 </body>
 </html>
-
-@section Scripts
-{
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}

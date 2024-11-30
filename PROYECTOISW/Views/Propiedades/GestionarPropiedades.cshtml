@@ -1,4 +1,8 @@
 ﻿@model List<Propiedade>
+@using PROYECTOISW.Servicios
+@{
+    IServicioRC _servicio;
+}
 @{
     Layout = null;
 }
@@ -28,15 +32,26 @@
                         @{
                             var base64 = Convert.ToBase64String(e.Imagen);
                             var imgSrc = $"data:image/jpeg;base64,{base64}";
-                            <a href="@Url.Action("Detalles","Busqueda", new {id = p.IdPropiedad})" target="_blank">
-                                <img src="@imgSrc" alt="Imagen de la propiedad" style="height:auto; width:100%" />
-                            </a>
+
+                            <img src="@imgSrc" alt="Imagen de la propiedad" style="height:auto; width:100%" />
                             <div class="card-body">
                                 <h5 class="card-title">@p.Titulo</h5>
                                 <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                <a href="@Url.Action("Editar", "Propiedades", new {id = e.IdPropiedad})" class="btn btn-success">Editar</a>
-                                <a href="@Url.Action("Pausar", "Propiedades", new {id = e.IdPropiedad})" class="btn btn-warning">Pausar</a>
-                                <a href="@Url.Action("Eliminar", "Propiedades", new {id = e.IdPropiedad})" class="btn btn-danger">Eliminar</a>
+                                <a href="@Url.Action("Editar", "Propiedades", new {id = e.IdPropiedad})" class="btn btn-info">Editar</a>
+                                @{if(p.Estado == "H")
+                                {
+                                    <a href="@Url.Action("Pausar", "Propiedades", new {id = e.IdPropiedad})" class="btn btn-warning">Pausar</a>
+                                }
+                                else
+                                {
+                                    <a href="@Url.Action("Pausar", "Propiedades", new {id = e.IdPropiedad})" class="btn btn-warning">Activar</a>
+                                }
+                                }
+                                <a href="@Url.Action("Eliminar", "Propiedades", new {id = e.IdPropiedad})" class="btn btn-success">Eliminar</a>
+                                @if (p.Duda.Count != 0)
+                                {
+                                    <a href="@Url.Action("Detalles", "Propiedades", new { id = p.IdPropiedad })" class="btn btn-secondary mt-2">Dudas</a>
+                                }
                             </div>
                         }
                     </div>

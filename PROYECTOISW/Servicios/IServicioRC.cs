@@ -13,5 +13,7 @@ namespace PROYECTOISW.Servicios
         void EnviarCorreo(string destino, Usuario user, int idPropiedad);
         //Manda la notificacion de nueva duda
         void EnviarCorreo(string destino);
+
+        bool BuscarDudas(int id);
     }
 }

@@ -89,6 +89,7 @@ namespace PROYECTOISW.Controllers
                     new Claim(ClaimTypes.Name, crear.NombreCompleto),
                     new Claim(ClaimTypes.Email, crear.CorreoElectronico),
                     new Claim(ClaimTypes.MobilePhone, crear.Telefono),
+                    new Claim(ClaimTypes.Role, crear.Tipo.ToString())
                 };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -132,10 +133,6 @@ namespace PROYECTOISW.Controllers
                     new Claim(ClaimTypes.MobilePhone, usuario.Telefono),
                     new Claim(ClaimTypes.Role, usuario.Tipo.ToString())
                 };
-                //Roles
-                
-                   
-                
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,

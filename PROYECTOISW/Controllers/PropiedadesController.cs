@@ -115,10 +115,10 @@ namespace PROYECTOISW.Controllers
         [HttpGet]
         public async Task<IActionResult> GestionarPropiedades()
         {
-            //Esta vista contendra todas las publicaciones realizadas por el propietario
-            //en donde cada propiedad tendra botones para que el usuario pueda editar, eliminar o poner 
-            //en suspension una publicacion
-            //1. Hay que consultar el id del propietario en la cookie
+            // Esta vista contendrá todas las publicaciones realizadas por el propietario
+            // en donde cada propiedad tendrá botones para que el usuario pueda editar, eliminar o poner 
+            // en suspensión una publicación
+            // 1. Hay que consultar el id del propietario en la cookie
             var claimsIdentity = User.Identity as ClaimsIdentity;
             if (claimsIdentity != null)
             {
@@ -128,10 +128,15 @@ namespace PROYECTOISW.Controllers
                     var propiedades = await _contexto.Propiedades
                         .Where(e => e.IdUsuario == id)
                         .Include(p => p.Imagenes) // Incluye las imágenes relacionadas
+                        .Include(p => p.Duda) // Incluye las reseñas relacionadas
                         .ToListAsync();
+
                     return View(propiedades);
                 }
-                catch (Exception ex) { Console.WriteLine(ex.Message); }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
             }
             return View();
         }

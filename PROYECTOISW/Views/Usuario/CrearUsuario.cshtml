@@ -1,7 +1,7 @@
 ﻿@model PROYECTOISW.Models.ViewModel.PerfilViewModel.CrearUsuarioViewModel
 
 <form asp-action="CrearUsuario" asp-controller="Usuario" method="post" enctype="multipart/form-data">
-    <div class="mb-4">      
+    <div class="mb-4">
         <h2>Registrarse como</h2>
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-check">
@@ -22,7 +22,7 @@
     </div>
 
     <!-- Campo Correo Electronico -->
-    <div class="mb-4">
+    <div class="mb-1">
         <label asp-for="CorreoElectronico" class="form-label">Correo Electrónico</label>
         <input asp-for="CorreoElectronico" class="form-control" type="email" placeholder="Ingresar Correo Electrónico" />
         <span asp-validation-for="CorreoElectronico" class="text-danger"></span>
@@ -36,8 +36,8 @@
     }
 
     <!-- Mensaje de correo -->
-    <div class="mb-1">
-        <a class="text-decoration-none" style="color: #28a745;">Si eres estudiante usa el correo institucional</a>
+    <div class="mb-4">
+        <a id="correoMensaje" class="text-decoration-none" style="color: #28a745; display: none;">Ingresa tu correo institucional</a>
     </div>
 
     <!-- Campo de Contraseña -->
@@ -69,7 +69,7 @@
 
     <!-- Boton de Enviar -->
     <div class="mb-4">
-        <button type="submit" class="btn btn-lg w-100" style="background-color: #28a745; color: white;">Enviar</button>
+        <button type="submit" class="btn btn-lg w-100" style="background-color: #28a745; color: white;">Registrarse</button>
     </div>
 </form>
 
@@ -78,4 +78,23 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const estudianteRadio = document.getElementById('estudiante');
+            const propietarioRadio = document.getElementById('propietario');
+            const correoMensaje = document.getElementById('correoMensaje');
+
+            estudianteRadio.addEventListener('change', function () {
+                if (this.checked) {
+                    correoMensaje.style.display = 'block';
+                }
+            });
+
+            propietarioRadio.addEventListener('change', function () {
+                if (this.checked) {
+                    correoMensaje.style.display = 'none';
+                }
+            });
+        });
+    </script>
 }
