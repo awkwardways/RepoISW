@@ -40,8 +40,7 @@ namespace PROYECTOISW.Controllers
             var model = new CrearPropiedadViewModel();
             return View(model);
         }
-        //TODO: Validar que el usuario haya iniciado sesion y sea propietario.
-        //TODO2: Validar la entrada de datos.
+
         [HttpPost]
         public async Task<IActionResult> CrearPropiedad(CrearPropiedadViewModel nuevo)
         {
@@ -152,7 +151,7 @@ namespace PROYECTOISW.Controllers
                        .Where(e => e.IdPropiedad == id)
                        .Include(p => p.Imagenes) // Incluye las imágenes relacionadas
                        .FirstOrDefaultAsync();
-                var editar = new CrearPropiedadViewModel();
+                var editar = new EditarPropiedadViewModel();
                 editar.Titulo = propiedades.Titulo;
                 editar.Descripcion = propiedades.Descripcion;
                 editar.TipoPropiedad = propiedades.TipoPropiedad;
@@ -180,16 +179,12 @@ namespace PROYECTOISW.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Editar(CrearPropiedadViewModel editar)
+        public async Task<IActionResult> Editar(EditarPropiedadViewModel editar)
         {
             if (ModelState.IsValid)
             {
                 var imagenes = await _contexto.Imagenes.Where(i => i.IdPropiedad == editar.Id).ToListAsync();
-                if ( imagenes.Count == 10)
-                {
-                    ViewBag.Imagenes = "El número maximo de imagenes por proiedad es 10.";
-                    return View(editar);
-                }
+              
 
                 await _contexto.Propiedades
                        .Where(d => d.IdPropiedad == editar.Id)
@@ -212,6 +207,11 @@ namespace PROYECTOISW.Controllers
                 //agregar las fotos
                 if (editar.archivosImagenes != null && editar.archivosImagenes.Count > 0)
                 {
+                    if (imagenes.Count == 10)
+                    {
+                        ViewBag.Imagenes = "El número maximo de imagenes por proiedad es 10.";
+                        return View(editar);
+                    }
                     foreach (var foto in editar.archivosImagenes)
                     {
                         if (foto.Length > 0)

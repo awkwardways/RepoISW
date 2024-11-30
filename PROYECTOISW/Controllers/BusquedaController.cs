@@ -121,8 +121,6 @@ namespace PROYECTOISW.Controllers
         #endregion
 
         #region Contactar
-
-        int i = 0;
         [HttpGet]
         // Método Contactar
         public async Task<IActionResult> Contactar(int IdPropiedad)
