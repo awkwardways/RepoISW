@@ -11,12 +11,18 @@
 }
 
 .sidebar {
-    width: 20%;
-    background-color: #f8f9fa;
-    padding: 15px;
-    height: 100vh; /* Ocupa toda la altura de la pantalla */
-    overflow-y: auto; /* Permite el desplazamiento si el contenido es demasiado grande */
+    position: fixed; /* Fija el sidebar al viewport */
+    left: 0; /* Ancla al lado izquierdo */
+    top: 0; /* Asegura que comience desde la parte superior */
+    width: 250px; /* Ancho fijo del sidebar */
+    background-color: #f8f9fa; /* Color de fondo */
+    padding: 15px; /* Espaciado interno */
+    height: 100vh; /* Ocupa toda la altura de la ventana */
+    overflow-y: auto; /* Permite scroll si el contenido excede la altura */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Sombra para destacar el sidebar */
+    z-index: 1000; /* Asegura que el sidebar esté por encima del contenido principal */
 }
+
 .imagenPerfil {
     width: 200px; /* Ajusta el tamaño según tus necesidades */
     height: 200px; /* Ajusta el tamaño según tus necesidades */
@@ -96,7 +102,7 @@
     display: block;
 }
 .main-content {
-    width: 80%;
-    padding: 15px;
-    overflow-y: auto; /* Permite el desplazamiento si el contenido es demasiado grande */
+    margin-left: 30%; /* O puedes usar una medida fija como 250px */
+    padding: 15px; /* Espaciado interno opcional */
+    box-sizing: border-box; /* Asegura que el margen no afecte el ancho total */
 }

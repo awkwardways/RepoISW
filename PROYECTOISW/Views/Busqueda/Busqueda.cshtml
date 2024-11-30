@@ -16,9 +16,34 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <!--<link rel="stylesheet" href="/css/Busqueda.css"/>-->
+    <style>
+        .form-container {
+            margin-bottom: 80px;
+        }
+        .result-container {
+            margin-top: 80px;
+        }
+        .card-custom {
+            width: 28rem; /* Ancho ajustado */
+            height: 32rem; /* Alto ajustado */
+            margin: 0 auto;
+        }
+
+        .image-center {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+            max-height: 100%; /* Limitar el tamaño para mantener proporciones */
+            object-fit: fill;
+        }
+
+        .card-body {
+            overflow: auto; /* Manejar contenido adicional */
+        }
+</style>
 </head>
 <body>
-    <div class="container">
+    <div class="container form-container">
         <form asp-action="Busqueda" asp-controller="Busqueda" method="post" class="form-container">
             <div style="width: 35%;" class="item">
                 <label for="customRange1" class="form-label">Precio Minimo</label>
@@ -54,6 +79,7 @@
         </form>
     </div>
     <a id="resultados"></a>
+    <div class="container result-container align-content-center row">
     @{
         int i;
         foreach (var p in Model.Publicaciones)
@@ -63,17 +89,19 @@
             {
                 if (i == 0)
                 {
-                    <div class="card" style="width: 18rem;">
+                    <div class="card card-custom mt-5">
                         @{
                             var base64 = Convert.ToBase64String(e.Imagen);
                             var imgSrc = $"data:image/jpeg;base64,{base64}";
                         }
                         <a href="@Url.Action("Detalles","Busqueda", new {id = p.IdPropiedad})" target="_blank">
-                            <img src="@imgSrc" alt="Imagen de la propiedad" style="width:100%; height:auto" />
+                            <img src="@imgSrc" alt="Imagen de la propiedad" class="image-center"/>
                         </a>
                         <div class="card-body">
                             <h5 class="card-title">@p.Titulo</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <p class="card-text">@p.TipoPropiedad</p>
+                            <p class="card-text"> 🚪 @p.NumeroHabitaciones</p>
+                            <p class="card-text"> 💲 @p.PrecioRenta</p>
                             <a href="#" class="btn btn-primary">Go somewhere</a>
                             <a href="javascript:void(0);" onclick="addToFavorites(@p.IdPropiedad)" class="btn btn-secondary mt-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
@@ -88,7 +116,7 @@
             }
         }
     }
-
+    </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
