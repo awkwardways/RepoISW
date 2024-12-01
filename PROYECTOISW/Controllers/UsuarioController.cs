@@ -33,6 +33,13 @@ namespace PROYECTOISW.Controllers
         {
             if (ModelState.IsValid)
             {
+                //Verifica que el correo no exista en el sistema
+                var encontrado = await _contexto.Usuarios.Where(c=>c.CorreoElectronico == nuevo.CorreoElectronico).FirstOrDefaultAsync();
+                if (encontrado != null)
+                {
+                    ViewBag.Encontrado = $"El correo {nuevo.CorreoElectronico} ya esta registrado en el sistema.";
+                    return View(nuevo);
+                }
                 //Verificar el tipo de usuario
                 nuevo.Tipo = nuevo.Tipo == "estudiante" ? "A" : "P";
 

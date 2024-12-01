@@ -4,7 +4,10 @@ namespace PROYECTOISW.Models.ViewModel.PerfilViewModel
 {
     public class CrearUsuarioViewModel
     {
+        [Required(ErrorMessage = "El campo es requerido")]
+        [Display(Name = "Tipo de usuario")]
         public string Tipo { get; set; }
+
         [Required(ErrorMessage = "El campo es requerido")]
         [Display(Name = "Nombre Completo")]
         public string NombreCompleto { get; set; }

@@ -1,80 +1,106 @@
 ﻿@model PROYECTOISW.Models.ViewModel.PerfilViewModel.CrearUsuarioViewModel
+@{
+    ViewData["Title"] = "Registro Usuario";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - PROYECTOISW</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-grid.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/PROYECTOISW.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="d-flex justify-content-center align-items-center vh-100" style="background-color: white; height:90%; margin-top: 120px">
+        <div class="login-container p-4" style="width: 100%; max-width: 600px;">
+            <form asp-action="CrearUsuario" asp-controller="Usuario" method="post" enctype="multipart/form-data">
+                <div class="mb-4">
+                    <h2>Registrarse como</h2>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-check">
+                        <input asp-for="Tipo" class="form-check-input" type="radio" id="estudiante" value="estudiante" />
+                        <label class="form-check-label" for="estudiante">Estudiante</label>
+                    </div>
+                    <div class="form-check">
+                        <input asp-for="Tipo" class="form-check-input" type="radio" id="propietario" value="propietario" />
+                        <label class="form-check-label" for="propietario">Propietario</label>
+                    </div>
+                    <span asp-validation-for="Tipo" class="text-danger"></span>
+                </div>
+                <!-- Campo Nombre Completo -->
+                <div class="mb-4">
+                    <label asp-for="NombreCompleto" class="form-label">Nombre Completo</label>
+                    <input asp-for="NombreCompleto" class="form-control" type="text" placeholder="Ingresar Nombre Completo" />
+                    <span asp-validation-for="NombreCompleto" class="text-danger"></span>
+                </div>
 
-<form asp-action="CrearUsuario" asp-controller="Usuario" method="post" enctype="multipart/form-data">
-    <div class="mb-4">
-        <h2>Registrarse como</h2>
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="form-check">
-            <input asp-for="Tipo" class="form-check-input" type="radio" id="estudiante" value="estudiante" />
-            <label class="form-check-label" for="estudiante">Estudiante</label>
+                <!-- Campo Correo Electronico -->
+                <div class="mb-1">
+                    <label asp-for="CorreoElectronico" class="form-label">Correo Electrónico</label>
+                    <input asp-for="CorreoElectronico" class="form-control" type="email" placeholder="Ingresar Correo Electrónico" />
+                    <span asp-validation-for="CorreoElectronico" class="text-danger"></span>
+                </div>
+                <!-- Mensaje de error -->
+                @if (!string.IsNullOrEmpty(ViewBag.EmailError))
+                {
+                    <div class="alert alert-danger mt-3" role="alert">
+                        @ViewBag.EmailError
+                    </div>
+                }
+                @if (!string.IsNullOrEmpty(ViewBag.Encontrado))
+                {
+                    <div class="alert alert-danger mt-3" role="alert">
+                        @ViewBag.Encontrado
+                    </div>
+                }
+
+                <!-- Mensaje de correo -->
+                <div class="mb-4">
+                    <a id="correoMensaje" class="text-decoration-none" style="color: #28a745; display: none;">Ingresa tu correo institucional</a>
+                </div>
+
+                <!-- Campo de Contraseña -->
+                <div class="mb-4">
+                    <label asp-for="Contraseña" class="form-label">Contraseña</label>
+                    <input asp-for="Contraseña" class="form-control" type="password" placeholder="Ingresar Contraseña" />
+                    <span asp-validation-for="Contraseña" class="text-danger"></span>
+                </div>
+
+                <!-- Campo de RContraseña (Confirmacion de contraseñea)-->
+                <div class="mb-4">
+                    <label asp-for="RContraseña" class="form-label">Confirmar Contraseña</label>
+                    <input asp-for="RContraseña" class="form-control" type="password" placeholder="Confirmar Contraseña" />
+                    <span asp-validation-for="RContraseña" class="text-danger"></span>
+                </div>
+
+                <!-- Campo de Telefono -->
+                <div class="mb-4">
+                    <label asp-for="Telefono" class="form-label">Teléfono</label>
+                    <input asp-for="Telefono" class="form-control" type="number" placeholder="Ingresar Teléfono" />
+                    <span asp-validation-for="Telefono" class="text-danger"></span>
+                </div>
+
+                <!-- Carga de imagenes -->
+                <div class="mb-4">
+                    <label asp-for="Foto" class="form-label">Imagen</label>
+                    <input asp-for="Foto" class="form-control" type="file" accept="image/*" />
+                </div>
+
+                <!-- Boton de Enviar -->
+                <div class="mb-4">
+                    <button type="submit" class="btn btn-lg w-100" style="background-color: #28a745; color: white;">Registrarse</button>
+                </div>
+            </form>
         </div>
-        <div class="form-check">
-            <input asp-for="Tipo" class="form-check-input" type="radio" id="propietario" value="propietario" />
-            <label class="form-check-label" for="propietario">Propietario</label>
-        </div>
-        <span asp-validation-for="Tipo" class="text-danger"></span>
-    </div>
-    <!-- Campo Nombre Completo -->
-    <div class="mb-4">
-        <label asp-for="NombreCompleto" class="form-label">Nombre Completo</label>
-        <input asp-for="NombreCompleto" class="form-control" type="text" placeholder="Ingresar Nombre Completo" />
-        <span asp-validation-for="NombreCompleto" class="text-danger"></span>
     </div>
 
-    <!-- Campo Correo Electronico -->
-    <div class="mb-1">
-        <label asp-for="CorreoElectronico" class="form-label">Correo Electrónico</label>
-        <input asp-for="CorreoElectronico" class="form-control" type="email" placeholder="Ingresar Correo Electrónico" />
-        <span asp-validation-for="CorreoElectronico" class="text-danger"></span>
-    </div>
-    <!-- Mensaje de error -->
-    @if (!string.IsNullOrEmpty(ViewBag.EmailError))
-    {
-        <div class="alert alert-danger mt-3" role="alert">
-            @ViewBag.EmailError
-        </div>
-    }
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
 
-    <!-- Mensaje de correo -->
-    <div class="mb-4">
-        <a id="correoMensaje" class="text-decoration-none" style="color: #28a745; display: none;">Ingresa tu correo institucional</a>
-    </div>
-
-    <!-- Campo de Contraseña -->
-    <div class="mb-4">
-        <label asp-for="Contraseña" class="form-label">Contraseña</label>
-        <input asp-for="Contraseña" class="form-control" type="password" placeholder="Ingresar Contraseña" />
-        <span asp-validation-for="Contraseña" class="text-danger"></span>
-    </div>
-
-    <!-- Campo de RContraseña (Confirmacion de contraseñea)-->
-    <div class="mb-4">
-        <label asp-for="RContraseña" class="form-label">Confirmar Contraseña</label>
-        <input asp-for="RContraseña" class="form-control" type="password" placeholder="Confirmar Contraseña" />
-        <span asp-validation-for="RContraseña" class="text-danger"></span>
-    </div>
-
-    <!-- Campo de Telefono -->
-    <div class="mb-4">
-        <label asp-for="Telefono" class="form-label">Teléfono</label>
-        <input asp-for="Telefono" class="form-control" type="number" placeholder="Ingresar Teléfono" />
-        <span asp-validation-for="Telefono" class="text-danger"></span>
-    </div>
-
-    <!-- Carga de imagenes -->
-    <div class="mb-4">
-        <label asp-for="Foto" class="form-label">Imagen</label>
-        <input asp-for="Foto" class="form-control" type="file" accept="image/*" />
-    </div>
-
-    <!-- Boton de Enviar -->
-    <div class="mb-4">
-        <button type="submit" class="btn btn-lg w-100" style="background-color: #28a745; color: white;">Registrarse</button>
-    </div>
-</form>
-
-@section Scripts
-{
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
@@ -97,4 +123,5 @@
             });
         });
     </script>
-}
+</body>
+</html>
