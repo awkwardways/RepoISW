@@ -19,7 +19,7 @@ namespace PROYECTOISW.Controllers
     {
         private readonly ProyectoiswContext _contexto;
         private readonly IServicioRC _servicioC;
-        public BusquedaController(ProyectoiswContext context, IServicioRC servicioC) 
+        public BusquedaController(ProyectoiswContext context, IServicioRC servicioC)
         {
             _contexto = context;
             _servicioC = servicioC;
@@ -28,7 +28,7 @@ namespace PROYECTOISW.Controllers
         [HttpGet]
         public async Task<IActionResult> Busqueda()
         {
-            var publicaciones = await _contexto.Propiedades.Where(e=>e.Estado != "D").Include(p => p.Imagenes).ToListAsync();
+            var publicaciones = await _contexto.Propiedades.Where(e => e.Estado != "D").Include(p => p.Imagenes).ToListAsync();
             var viewModel = new CompartidoViewModel();
             viewModel.Publicaciones = new List<Propiedade>();
             viewModel.Buscar = new BusquedaViewModel();
@@ -37,17 +37,17 @@ namespace PROYECTOISW.Controllers
             return View(viewModel);
         }
         [HttpPost]
-        public async Task<IActionResult> Busqueda(CompartidoViewModel model) 
+        public async Task<IActionResult> Busqueda(CompartidoViewModel model)
         {
             //Agregar filtros
             var publicaciones = await _contexto.Propiedades
-                    .Where(p => p.TipoPropiedad == model.Buscar.TipoInmueble && 
+                    .Where(p => p.TipoPropiedad == model.Buscar.TipoInmueble &&
                     p.Distancia >= model.Buscar.DistanciaAEscuela &&
                     (p.PrecioRenta <= model.Buscar.MaxPrecio && p.PrecioRenta >= model.Buscar.MinPrecio) &&
                     p.Estado != "D")
                     .Include(p => p.Imagenes)
                     .ToListAsync();
-            
+
             model.Publicaciones = publicaciones;
             return View("Busqueda", model);
         }
@@ -55,17 +55,17 @@ namespace PROYECTOISW.Controllers
 
         #region Detalles
         [HttpGet]
-        public async Task<IActionResult> Detalles(int id) 
+        public async Task<IActionResult> Detalles(int id)
         {
             //Buscar la propiedad con las sus imagenes
-            Propiedade detalles = await _contexto.Propiedades.Include(i => i.Imagenes).FirstAsync(d=>d.IdPropiedad == id);
+            Propiedade detalles = await _contexto.Propiedades.Include(i => i.Imagenes).FirstAsync(d => d.IdPropiedad == id);
             return View(detalles);
         }
         #endregion
 
         #region Rentar
         [HttpGet]
-        public async Task <IActionResult> Rentar(int idUser,int idPropiedad)
+        public async Task<IActionResult> Rentar(int idUser, int idPropiedad)
         {
             var claimsIdentity = User.Identity as ClaimsIdentity;
             var idUsuario = claimsIdentity?.FindFirst("Id_Usuario")?.Value;
@@ -110,8 +110,8 @@ namespace PROYECTOISW.Controllers
 
             var r = await _contexto.Rentadas
                 .Where(f => f.IdUsuario == int.Parse(idUser))
-                .Include(f => f.IdPropiedadNavigation) // Asegúrate de que 'Propiedad' es la navegación correcta
-                .ThenInclude(p => p.Imagenes) // Asegúrate de que 'Imagenes' es la navegación correcta
+                .Include(f => f.IdPropiedadNavigation)
+                .ThenInclude(p => p.Imagenes)
                 .Select(f => f.IdPropiedadNavigation)
                 .ToListAsync();
 

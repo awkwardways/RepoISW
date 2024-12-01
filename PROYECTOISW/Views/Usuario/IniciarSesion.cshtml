@@ -80,5 +80,9 @@
             contraseña.addEventListener('input', checkInputs);
         });
     </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
 </body>
 </html>

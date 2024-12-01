@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@* @model PROYECTOISW.Models.ViewModel.PerfilViewModel.UsuarioViewModel *@
+@using Microsoft.AspNetCore.Identity
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="utf-8" />
@@ -10,41 +12,50 @@
     <link rel="stylesheet" href="~/PROYECTOISW.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Busqueda" asp-action="Busqueda">PROYECTOISW</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Propiedades" asp-action="CrearPropiedad">Propiedad</a>
-                        </li>
-                    </ul>
+    <div class="contenedor">
+        <div class="miHeader">
+            <nav class="navbar navbar-expand-md navbar-light bg-light">
+                <div class="container-fluid">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav flex-column">
+                            <!-- Evalua el rol del usuario -->
+                            @if (User.IsInRole("A"))
+                            {
+                                <li class="nav-item"><a href="@Url.Action("Busqueda", "Busqueda")" class="nav-link text-dark">Buscar Propiedades</a></li>
+                                <li class="nav-item"><a href="@Url.Action("Rentadas", "Busqueda")" class="nav-link text-dark">Propiedades Alquiladas</a></li>
+                                <li class="nav-item"><a href="@Url.Action("Mostrar", "Favoritos")" class="nav-link text-dark">Favoritos</a></li>
+                            }
+                            else if (User.IsInRole("P"))
+                            {
+                                <li class="nav-item"><a href="@Url.Action("CrearPropiedad", "Propiedades")" class="nav-link text-dark">Agregar Propiedad</a></li>
+                                <li class="nav-item"><a href="@Url.Action("GestionarPropiedades", "Propiedades")" class="nav-link text-dark">Gestionar Propiedades</a></li>
+                            }
+                            <!-- Configuracion del perfil -->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Configuración de perfil
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="@Url.Action("CambiarContraseña", "Usuario")">Actualizar Contraseña</a></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("CambiarCorreo", "Usuario")">Actualizar Correo</a></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("CambiarTelefono", "Usuario")">Actualizar Teléfono</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item"><a href="@Url.Action("CerrarSesion","Usuario")" class="nav-link text-dark">Cerrar Sesión</a></li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - PROYECTOISW - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </nav>
         </div>
-    </footer>
+        <div class="miMain container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+    </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

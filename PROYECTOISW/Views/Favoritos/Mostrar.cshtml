@@ -1,102 +1,31 @@
 ﻿@model List<PROYECTOISW.Models.Propiedade>
-@{
-    Layout = null;
-}
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - PROYECTOISW</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-grid.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/PROYECTOISW.styles.css" asp-append-version="true" />
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-</head>
-<style>
-    .form-container {
-        margin: 20px auto;
-        padding: 20px;
-        background-color: #f9f9f9;
-        border-radius: 5px;
-        width: 100%;
-    }
+<h2>Favoritos</h2>
+<div id="propiedades-container" class="d-flex flex-wrap justify-content-between">
+    @foreach (var p in Model)
+    {
+        <div class="form-container propiedad-card" data-id="@p.IdPropiedad">
+            @{
+                var base64 = Convert.ToBase64String(p.Imagenes.FirstOrDefault()?.Imagen ?? new byte[0]);
 
-    .result-container {
-        margin-top: 20px;
-    }
-
-    /* Establecemos un tamaño fijo para las tarjetas */
-    .propiedad-card {
-        width: 18rem; /* Ancho fijo */
-        height: 400px; /* Alto fijo para que todas las tarjetas tengan la misma altura */
-        margin-bottom: 20px; /* Espacio entre tarjetas */
-        display: flex;
-        flex-direction: column; /* Aseguramos que los elementos dentro de la tarjeta se apilen verticalmente */
-    }
-
-    .card-custom {
-        width: 100%;
-        height: 100%; /* Aseguramos que ocupe todo el espacio disponible en la tarjeta */
-        display: flex;
-        flex-direction: column;
-    }
-
-    /* Imagen con tamaño fijo */
-    .image-center {
-        width: 100%; /* Ocupa todo el ancho de la tarjeta */
-        height: 200px; /* Alto fijo para todas las imágenes */
-        object-fit: cover; /* Mantiene las proporciones sin deformar y recorta la imagen si es necesario */
-    }
-
-    .card-body {
-        flex-grow: 1; /* Hace que el contenido ocupe el espacio restante */
-        padding: 1rem;
-    }
-
-    .card-text {
-        flex-grow: 1;
-        height: 60px;
-        overflow: hidden;
-        text-overflow: ellipsis; /* Evita que el texto se desborde */
-    }
-
-    .btn {
-        width: 100%;
-    }
-</style>
-<body>
-    <h2>Favoritos</h2>
-    <div id="propiedades-container" class="d-flex flex-wrap justify-content-between">
-        @foreach (var p in Model)
-
-        {
-            <div class="form-container propiedad-card" data-id="@p.IdPropiedad">
-                @{
-                    var base64 = Convert.ToBase64String(p.Imagenes.FirstOrDefault()?.Imagen ?? new byte[0]);
-
-                    var imgSrc = $"data:image/jpeg;base64,{base64}";
-                }
-                <a href="@Url.Action("Detalles", "Busqueda", new { id = p.IdPropiedad })" target="_blank">
-                    <img src="@imgSrc" alt="Imagen de la propiedad" class="image-center" />
+                var imgSrc = $"data:image/jpeg;base64,{base64}";
+            }
+            <a href="@Url.Action("Detalles", "Busqueda", new { id = p.IdPropiedad })" target="_blank">
+                <img src="@imgSrc" alt="Imagen de la propiedad" class="image-center" />
+            </a>
+            <div class="card-custom">
+                <h5 class="card-title">@p.Titulo</h5>
+                <p class="card-text">@p.Descripcion</p>
+                <a href="@Url.Action("Detalles", "Busqueda", new { id = p.IdPropiedad })" class="btn btn-primary">Ver más</a>
+                <a href="javascript:void(0);" onclick="eliminarFavorito(@p.IdPropiedad)" class="btn btn-danger mt-2">
+                    Eliminar
                 </a>
-                <div class="card-custom">
-                    <h5 class="card-title">@p.Titulo</h5>
-                    <p class="card-text">@p.Descripcion</p>
-                    <a href="@Url.Action("Detalles", "Busqueda", new { id = p.IdPropiedad })" class="btn btn-primary">Ver más</a>
-                    <a href="javascript:void(0);" onclick="eliminarFavorito(@p.IdPropiedad)" class="btn btn-danger mt-2">
-                        Eliminar
-                    </a>
-                </div>
             </div>
-        }
-    </div>
+        </div>
+    }
+</div>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+@section Scripts
+{
     <script>
         function eliminarFavorito(idPropiedad) {
             $.ajax({
@@ -118,5 +47,4 @@
             });
         }
     </script>
-</body>
-</html>
+}

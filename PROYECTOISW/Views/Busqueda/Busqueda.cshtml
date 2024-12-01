@@ -1,134 +1,91 @@
 ﻿@model PROYECTOISW.Models.ViewModel.CompartidoViewModel
-@{
-    Layout = null;
-}
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - PROYECTOISW</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <style>
-        .form-container {
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #f9f9f9;
-            border-radius: 5px;
-            width: 100%;
-        }
 
-        .result-container {
-            margin-top: 20px;
-        }
-
-        .card-custom {
-            width: 100%;
-            height: auto;
-            margin-bottom: 20px;
-        }
-
-        .image-center {
-            display: block;
-            margin: 0 auto;
-            max-width: 100%;
-            max-height: 200px;
-            object-fit: cover;
-        }
-
-        .card-body {
-            overflow: auto;
-        }
-    </style>
-</head>
-<body>
-    <div class="container-fluid">
-        <!-- Filtros -->
-        <div class="form-container">
-            <form asp-action="Busqueda" asp-controller="Busqueda" method="post">
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label for="customRange1" class="form-label">Precio Mínimo</label>
-                        <input asp-for="Buscar.MinPrecio" type="range" class="form-range" min="0" max="50000" step="500" id="customRange1">
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="customRange2" class="form-label">Precio Máximo</label>
-                        <input asp-for="Buscar.MaxPrecio" type="range" class="form-range" min="0" max="50000" step="500" id="customRange2">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label for="rangeValues" class="form-label">Rangos: <span id="rangeValues">0, 0</span></label>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="esimec" class="form-label">Distancia a ESIME Culhuacán</label>
-                        <input asp-for="Buscar.DistanciaAEscuela" type="range" class="form-range" min="0" max="5" id="esimec">
-                        <label for="esime" class="form-label">Distancia: <span id="esime">0 KM</span></label>
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <select asp-for="Buscar.TipoInmueble" class="form-select">
-                        <option selected>Tipo de Inmueble</option>
-                        <option value="casa">Casa</option>
-                        <option value="departamento">Departamento</option>
-                        <option value="habitacion">Habitación</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-success w-100">Buscar</button>
-            </form>
-        </div>
-
-        <!-- Resultados -->
-        <div class="result-container">
+<div class="container-fluid">
+    <!-- Filtros -->
+    <div class="form-container">
+        <form asp-action="Busqueda" asp-controller="Busqueda" method="post">
             <div class="row">
-                @if (Model.Publicaciones.Any())
-
-                {
-                    foreach (var p in Model.Publicaciones)
-                    {
-                        @foreach (var e in p.Imagenes.Take(1))
-
-                        {
-                            <div class="col-12 col-md-6 d-flex justify-content-center">
-                                <div class="card card-custom">
-                                    @{
-                                        var base64 = Convert.ToBase64String(e.Imagen);
-                                        var imgSrc = $"data:image/jpeg;base64,{base64}";
-                                    }
-                                    <a href="@Url.Action("Detalles", "Busqueda", new { id = p.IdPropiedad })" target="_blank">
-                                        <img src="@imgSrc" alt="Imagen de la propiedad" class="image-center" />
-                                    </a>
-                                    <div class="card-body">
-                                        <h5 class="card-title">@p.Titulo</h5>
-                                        <p class="card-text">@p.TipoPropiedad</p>
-                                        <p class="card-text"> 🚪 @p.NumeroHabitaciones</p>
-                                        <p class="card-text"> 💲 @p.PrecioRenta</p>
-                                        <a href="@Url.Action("Detalles", "Busqueda", new { id = p.IdPropiedad })" class="btn btn-primary">Ver Más</a>
-                                        <button onclick="addToFavorites(@p.IdPropiedad)" class="btn btn-light">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
-                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                    }
-
-                }
-
-                else
-
-                {
-                    <p class="text-center">No se encontraron publicaciones.</p>
-                }
+                <div class="col-md-6 mb-3">
+                    <label for="customRange1" class="form-label">Precio Mínimo</label>
+                    <input asp-for="Buscar.MinPrecio" type="range" class="form-range" min="0" max="50000" step="500" id="customRange1">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="customRange2" class="form-label">Precio Máximo</label>
+                    <input asp-for="Buscar.MaxPrecio" type="range" class="form-range" min="0" max="50000" step="500" id="customRange2">
+                </div>
             </div>
-        </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="rangeValues" class="form-label">Rangos: <span id="rangeValues">0, 0</span></label>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="esimec" class="form-label">Distancia a ESIME Culhuacán</label>
+                    <input asp-for="Buscar.DistanciaAEscuela" type="range" class="form-range" min="0" max="5" id="esimec">
+                    <label for="esime" class="form-label">Distancia: <span id="esime">0 KM</span></label>
+                </div>
+            </div>
+            <div class="mb-3">
+                <select asp-for="Buscar.TipoInmueble" class="form-select">
+                    <option selected>Tipo de Inmueble</option>
+                    <option value="casa">Casa</option>
+                    <option value="departamento">Departamento</option>
+                    <option value="habitacion">Habitación</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-success w-100">Buscar</button>
+        </form>
     </div>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Resultados -->
+    <div class="result-container">
+        <div class="row">
+            @if (Model.Publicaciones.Any())
+
+            {
+                foreach (var p in Model.Publicaciones)
+                {
+                    @foreach (var e in p.Imagenes.Take(1))
+
+                    {
+                        <div class="col-12 col-md-6 d-flex justify-content-center">
+                            <div class="card card-custom">
+                                @{
+                                    var base64 = Convert.ToBase64String(e.Imagen);
+                                    var imgSrc = $"data:image/jpeg;base64,{base64}";
+                                }
+                                <a href="@Url.Action("Detalles", "Busqueda", new { id = p.IdPropiedad })" target="_blank">
+                                    <img src="@imgSrc" alt="Imagen de la propiedad" class="image-center" />
+                                </a>
+                                <div class="card-body">
+                                    <h5 class="card-title">@p.Titulo</h5>
+                                    <p class="card-text">@p.TipoPropiedad</p>
+                                    <p class="card-text"> 🚪 @p.NumeroHabitaciones</p>
+                                    <p class="card-text"> 💲 @p.PrecioRenta</p>
+                                    <a href="@Url.Action("Detalles", "Busqueda", new { id = p.IdPropiedad })" class="btn btn-primary">Ver Más</a>
+                                    <button onclick="addToFavorites(@p.IdPropiedad)" class="btn btn-light">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                            <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+
+            }
+
+            else
+
+            {
+                <p class="text-center">No se encontraron publicaciones.</p>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
     <script>
         const rangeInput1 = document.getElementById('customRange1');
         const rangeInput2 = document.getElementById('customRange2');
@@ -161,5 +118,4 @@
             });
         }
     </script>
-</body>
-</html>
+}

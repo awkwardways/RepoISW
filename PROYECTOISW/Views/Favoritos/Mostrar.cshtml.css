@@ -1,0 +1,50 @@
+﻿.form-container {
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.result-container {
+    margin-top: 20px;
+}
+
+/* Establecemos un tamaño fijo para las tarjetas */
+.propiedad-card {
+    width: 18rem; /* Ancho fijo */
+    height: 400px; /* Alto fijo para que todas las tarjetas tengan la misma altura */
+    margin-bottom: 20px; /* Espacio entre tarjetas */
+    display: flex;
+    flex-direction: column; /* Aseguramos que los elementos dentro de la tarjeta se apilen verticalmente */
+}
+
+.card-custom {
+    width: 100%;
+    height: 100%; /* Aseguramos que ocupe todo el espacio disponible en la tarjeta */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Imagen con tamaño fijo */
+.image-center {
+    width: 100%; /* Ocupa todo el ancho de la tarjeta */
+    height: 200px; /* Alto fijo para todas las imágenes */
+    object-fit: cover; /* Mantiene las proporciones sin deformar y recorta la imagen si es necesario */
+}
+
+.card-body {
+    flex-grow: 1; /* Hace que el contenido ocupe el espacio restante */
+    padding: 1rem;
+}
+
+.card-text {
+    flex-grow: 1;
+    height: 60px;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Evita que el texto se desborde */
+}
+
+.btn {
+    width: 100%;
+}

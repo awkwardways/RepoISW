@@ -32,6 +32,7 @@ namespace PROYECTOISW.Controllers
             _contexto = contexto;
             _servicios = servicios;
         }
+
         #region Crear
         [Authorize(Roles = "P")]
         [HttpGet]
@@ -241,12 +242,39 @@ namespace PROYECTOISW.Controllers
         public async Task<IActionResult> Eliminar(int id)
         {
             //1. Eliminar las fotos de en la tabla imagenes
-            var e = _contexto.Imagenes.Where(w => w.IdPropiedad == id).ToList();
+            var e = await _contexto.Imagenes.Where(w => w.IdPropiedad == id).ToListAsync();
+            var d = await _contexto.Dudas.Where(w => w.IdPropiedad == id).ToListAsync();
+            var f = await _contexto.Favoritos.Where(f => f.IdPropiedad == id).ToListAsync();
+            var c = await _contexto.Reseñas.Where(c => c.IdPropiedad == id).ToListAsync();
             if (e.Any())
             {
                 foreach (var el in e)
                 {
                     _contexto.Imagenes.Remove(el);
+                }
+                await _contexto.SaveChangesAsync();
+            }
+            if (d.Any())
+            {
+                foreach (var du in d)
+                {
+                    _contexto.Dudas.Remove(du);
+                }
+                await _contexto.SaveChangesAsync();
+            }
+            if (f.Any())
+            {
+                foreach (var fa in f)
+                {
+                    _contexto.Favoritos.Remove(fa);
+                }
+                await _contexto.SaveChangesAsync();
+            }
+            if (c.Any())
+            {
+                foreach (var re in c)
+                {
+                    _contexto.Reseñas.Remove(re);
                 }
                 await _contexto.SaveChangesAsync();
             }

@@ -23,11 +23,11 @@ namespace PROYECTOISW.Controllers
             if (idUser != null)
             {
                 var propiedadesFavoritas = await _contexto.Favoritos
-     .Where(f => f.IdUsuario == int.Parse(idUser))
-     .Include(f => f.IdPropiedadNavigation) // Asegúrate de que 'Propiedad' es la navegación correcta
-         .ThenInclude(p => p.Imagenes) // Asegúrate de que 'Imagenes' es la navegación correcta
-     .Select(f => f.IdPropiedadNavigation)
-     .ToListAsync();
+                    .Where(f => f.IdUsuario == int.Parse(idUser))
+                    .Include(f => f.IdPropiedadNavigation)
+                    .ThenInclude(p => p.Imagenes)
+                    .Select(f => f.IdPropiedadNavigation)
+                    .ToListAsync();
                 return View(propiedadesFavoritas);
             }
             return View();

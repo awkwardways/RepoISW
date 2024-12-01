@@ -1,4 +1,4 @@
-html {
+/*html {
   font-size: 14px;
 }
 
@@ -19,4 +19,36 @@ html {
 
 body {
   margin-bottom: 60px;
+}*/
+.contenedor {
+    display: flex;
+    flex-direction: column; /* Cambia la dirección del flex a columna */
+    height: 100vh; /* Altura completa de la pantalla */
+}
+
+.miHeader {
+    flex: 0 0 auto; /* Ajusta la altura automáticamente */
+    background-color: #f8f9fa; /* Color de fondo opcional */
+}
+
+.miMain {
+    flex: 1; /* Ocupa el espacio restante */
+    background-color: #ffffff; /* Color de fondo opcional */
+    overflow-y: auto; /* Permite el desplazamiento si el contenido es demasiado grande */
+}
+
+@media (min-width: 768px) {
+    .contenedor {
+        flex-direction: row; /* Cambia la dirección del flex a fila en dispositivos medianos y más grandes */
+    }
+
+    .miHeader {
+        flex: 0 0 20%; /* 20% del ancho */
+        height: 100vh; /* Altura completa de la pantalla */
+    }
+
+    .miMain {
+        flex: 1; /* 80% del ancho restante */
+        height: 100vh; /* Altura completa de la pantalla */
+    }
 }

@@ -1,60 +1,40 @@
 ﻿@model PROYECTOISW.Models.ViewModel.PerfilViewModel.CambiarContraseñaViewModel
-@{
-    Layout = null;
-}
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title>Cambiar Contraseña</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-grid.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/PROYECTOISW.styles.css" asp-append-version="true" />
-</head>
-<body>
 
-    <div class="main-content">
-        <h1>Cambiar Contraseña</h1>
-        <form asp-action="CambiarContraseña" asp-controller="Usuario" method="post">
-            <!--Obtener los valores de id y correo-->
-            <input asp-for="Id" type="hidden" />
-            <input asp-for="Correo" type="hidden" />
+<div class="main-content">
+    <h1>Cambiar Contraseña</h1>
+    <form asp-action="CambiarContraseña" asp-controller="Usuario" method="post">
+        <!--Obtener los valores de id y correo-->
+        <input asp-for="Id" type="hidden" />
+        <input asp-for="Correo" type="hidden" />
 
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="mb-5">
-                <label asp-for="Actual" class="form-label"></label>
-                <input asp-for="Actual" type="password" class="form-control" placeholder="Ingresar Contraseña Actual" />
-                <span asp-validation-for="Actual" class="text-danger"></span>
-            </div>
-            <div class="mb-5">
-                <label asp-for="NuevaContraseña" class="form-label"></label>
-                <input asp-for="NuevaContraseña" type="password" class="form-control" placeholder="Nueva contraseña" />
-                <span asp-validation-for="NuevaContraseña" class="text-danger"></span>
-            </div>
-            <div class="mb-5">
-                <label asp-for="ConfirmarContraseña" class="form-label"></label>
-                <input asp-for="ConfirmarContraseña" type="password" class="form-control" placeholder="Confrmar Contraseña" />
-                <span asp-validation-for="ConfirmarContraseña" class="text-danger"></span>
-            </div>
-            <div class="mb-5">
-                <button type="submit" class="btn btn-secondary">Cambiar</button>
-            </div>
-        </form>
-        <!-- Mensaje de error -->
-        @if (!string.IsNullOrEmpty(ViewBag.Error))
-        {
-            <div class="alert alert-danger mt-3" role="alert">
-                @ViewBag.Error
-            </div>
-        }
-    </div>
-
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-</body>
-</html>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="mb-5">
+            <label asp-for="Actual" class="form-label"></label>
+            <input asp-for="Actual" type="password" class="form-control" placeholder="Ingresar Contraseña Actual" />
+            <span asp-validation-for="Actual" class="text-danger"></span>
+        </div>
+        <div class="mb-5">
+            <label asp-for="NuevaContraseña" class="form-label"></label>
+            <input asp-for="NuevaContraseña" type="password" class="form-control" placeholder="Nueva contraseña" />
+            <span asp-validation-for="NuevaContraseña" class="text-danger"></span>
+        </div>
+        <div class="mb-5">
+            <label asp-for="ConfirmarContraseña" class="form-label"></label>
+            <input asp-for="ConfirmarContraseña" type="password" class="form-control" placeholder="Confrmar Contraseña" />
+            <span asp-validation-for="ConfirmarContraseña" class="text-danger"></span>
+        </div>
+        <div class="mb-5">
+            <button type="submit" class="btn btn-secondary">Cambiar</button>
+        </div>
+    </form>
+    <!-- Mensaje de error -->
+    @if (!string.IsNullOrEmpty(ViewBag.Error))
+    {
+        <div class="alert alert-danger mt-3" role="alert">
+            @ViewBag.Error
+        </div>
+    }
+</div>
 
 @section Scripts
 {
