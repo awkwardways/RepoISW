@@ -37,7 +37,14 @@ body {
     overflow-y: auto; /* Permite el desplazamiento si el contenido es demasiado grande */
 }
 
-@media (min-width: 768px) {
+.miImagen {
+    width: 200px; /* Ajusta el tamaño según tus necesidades */
+    height: 200px; /* Ajusta el tamaño según tus necesidades */
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+@media screen and (min-width: 768px) {
     .contenedor {
         flex-direction: row; /* Cambia la dirección del flex a fila en dispositivos medianos y más grandes */
     }

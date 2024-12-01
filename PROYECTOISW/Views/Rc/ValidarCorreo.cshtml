@@ -1,7 +1,22 @@
 ﻿@model PROYECTOISW.Models.ViewModels.RCViewModels.ValidarCorreoViewModel
-
+@{
+    Layout = null;
+    ViewData["Title"] = "Recuperar Cuenta";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - PROYECTOISW</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-grid.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/PROYECTOISW.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="miForm container">
         <h1 class="text-center" style="color: black;">Recuperación de Contraseña</h1>
-        <form asp-action="ValidarCorreo" asp-controller="Rc" method="post">
+        <form asp-action="ValidarCorreo" asp-controller="Rc" method="post" class="w-50">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="mb-4">
                 <label asp-for="Correo" class="form-label" style="color: black;">Correo Electrónico</label>
@@ -20,10 +35,32 @@
                 </div>
             }
         </form>
+    </div>
 
-@section Scripts
-{
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @*   <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const correo = document.getElementById('correo');
+            const contraseña = document.getElementById('contraseña');
+            const entrar = document.getElementById('entrar');
+
+            function checkInputs() {
+                if (correo.value.trim() !== '' && contraseña.value.trim() !== '') {
+                    entrar.disabled = false;
+                } else {
+                    entrar.disabled = true;
+                }
+            }
+
+            correo.addEventListener('input', checkInputs);
+            contraseña.addEventListener('input', checkInputs);
+        });
+    </script> *@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-}
+
+</body>
+</html>

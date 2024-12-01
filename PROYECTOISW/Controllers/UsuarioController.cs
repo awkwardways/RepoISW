@@ -351,7 +351,19 @@ namespace PROYECTOISW.Controllers
             await _contexto.SaveChangesAsync();
             return RedirectToAction("Index", "Home", new { id = nueva.Id, opcion = 1 });
         }
-        #endregion 
+        #endregion
+        public IActionResult ObtenerImagen()
+        {
+            var claimsIdentity = User.Identity as ClaimsIdentity;
+            var id = int.Parse(claimsIdentity.FindFirst("Id_Usuario")?.Value);
+            var usuario = _contexto.Usuarios.Find(id);
+            if (usuario == null || usuario.Foto == null)
+            {
+                return NotFound();
+            }
+
+            return File(usuario.Foto, "image/jpeg");
+        }
 
         public async void BorrarCookie()
         {

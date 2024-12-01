@@ -19,9 +19,10 @@
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <div class="collapse navbar-collapse" id="navbarNav">
+                    <div class="collapse navbar-collapse flex-column" id="navbarNav">
+                        <img src="@Url.Action("ObtenerImagen", "Usuario")" alt="Foto de perfil" class="miImagen" />
+                        <h5 class="mt-5 mb-5">@User.Identity.Name</h5>
                         <ul class="navbar-nav flex-column">
-                            <h5>@User.Identity.Name</h5>
                             <!-- Evalua el rol del usuario -->
                             @if (User.IsInRole("A"))
                             {
