@@ -36,7 +36,8 @@
                             <a href="@Url.Action("Eliminar", "Propiedades", new {id = e.IdPropiedad})" class="btn btn-success @(p.Estado == "D" ? "disabled" : "") mt-2">Eliminar</a>
                             @if (p.Duda.Count != 0)
                             {
-                                <a href="@Url.Action("Detalles", "Propiedades", new { id = p.IdPropiedad })" class="btn btn-secondary mt-2 @(p.Estado == "D" ? "disabled" : "")">Preguntas</a>
+                                // <a href="@Url.Action("Detalles", "Propiedades", new { id = p.IdPropiedad })" class="btn btn-secondary mt-2 @(p.Estado == "D" ? "disabled" : "")">Preguntas</a>
+                                <a href="@Url.Action("Contactar","Busqueda", new { idPropiedad = p.IdPropiedad })" class="btn btn-secondary mt-2 @(p.Estado == "D" ? "disabled" : "")">Preguntas</a>
                             }
                         </div>
                     }

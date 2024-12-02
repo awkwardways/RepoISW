@@ -16,9 +16,10 @@
                 <h5 class="card-title">@p.Titulo</h5>
                 <p class="card-text">@p.Descripcion</p>
                 <a href="@Url.Action("Detalles", "Busqueda", new { id = p.IdPropiedad })" class="btn btn-primary">Ver más</a>
-                <a href="javascript:void(0);" onclick="eliminarFavorito(@p.IdPropiedad)" class="btn btn-danger mt-2">
-                    Eliminar
+                <a href="javascript:void(0);" onclick="confirmarEliminar(@p.IdPropiedad)" class="btn btn-danger mt-2">
+                    Quitar
                 </a>
+
             </div>
         </div>
     }
@@ -27,6 +28,12 @@
 @section Scripts
 {
     <script>
+            function confirmarEliminar(idPropiedad) {
+            if (confirm('¿Estás seguro de que deseas eliminar este favorito?')) {
+                eliminarFavorito(idPropiedad);
+            }
+        }
+
         function eliminarFavorito(idPropiedad) {
             $.ajax({
                 url: '@Url.Action("Eliminar", "Favoritos")',

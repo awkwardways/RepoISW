@@ -32,7 +32,7 @@
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h1 class="modal-title fs-5" id="exampleModalLabel">New message</h1>
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Deja tu comentario y Calificación</h1>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
@@ -45,7 +45,7 @@
 
                                                     <div class="mb-3">
                                                         <label for="message-text" class="col-form-label">Ingresa tu comentario:</label>
-                                                        <textarea asp-for="Comentario.Comentario" class="form-control" id="message-text"></textarea>
+                                                        <textarea asp-for="Comentario.Comentario" class="form-control" id="message-text" placeholder="Describe tu experiencia en la propiedad"></textarea>
                                                         <span asp-validation-for="Comentario.Comentario" class="text-danger"></span>
                                                     </div>
 
@@ -68,9 +68,10 @@
 
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                                        <button type="submit" class="btn btn-primary">Enviar Comentario</button>
+                                                        <button type="submit" class="btn btn-primary" id="submitButton" disabled>Enviar</button>
                                                     </div>
                                                 </form>
+
                                             </div>
                                         </div>
                                     </div>
@@ -170,5 +171,15 @@
                 highlightStars(selectedRating);
             }
         };
+    </script>
+    <script>
+        document.getElementById('message-text').addEventListener('input', function() {
+            var submitButton = document.getElementById('submitButton');
+            if (this.value.trim().length > 0) {
+                submitButton.disabled = false;
+            } else {
+                submitButton.disabled = true;
+            }
+        });
     </script>
 }
