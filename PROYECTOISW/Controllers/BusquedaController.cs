@@ -43,7 +43,7 @@ namespace PROYECTOISW.Controllers
             var publicaciones = await _contexto.Propiedades
                     .Where(p => p.TipoPropiedad == model.Buscar.TipoInmueble &&
                     p.Distancia >= model.Buscar.DistanciaAEscuela &&
-                    (p.PrecioRenta <= model.Buscar.MaxPrecio && p.PrecioRenta >= model.Buscar.MinPrecio) &&
+                    (p.PrecioRenta <= model.Buscar.MaxPrecio) &&
                     p.Estado != "D")
                     .Include(p => p.Imagenes)
                     .ToListAsync();
@@ -105,7 +105,8 @@ namespace PROYECTOISW.Controllers
             ComentarioPropiedadViewModel model = new ComentarioPropiedadViewModel
             {
                 Comentario = new ComentarioViewModel(),
-                Propiedad = new List<Propiedade>()
+                Propiedad = new List<Propiedade>(),
+                reseñas = new List<bool>()
             };
 
             var r = await _contexto.Rentadas
@@ -115,7 +116,18 @@ namespace PROYECTOISW.Controllers
                 .Select(f => f.IdPropiedadNavigation)
                 .ToListAsync();
 
+
             model.Propiedad = r;
+
+            Reseña? encontrada =  new Reseña();
+            foreach(var reseña in r)
+            {
+                encontrada = await _contexto.Reseñas.Where(id => id.IdPropiedad == reseña.IdPropiedad && id.IdUsuario == Convert.ToInt16(idUser)).FirstOrDefaultAsync();
+                if (encontrada != null)
+                    model.reseñas.Add(true);
+                else
+                    model.reseñas.Add(false);
+            }
             return View(model);
         }
         #endregion

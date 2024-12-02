@@ -27,7 +27,7 @@
             <span asp-validation-for="ConfirmarContraseña" class="text-danger"></span>
         </div>
         <div class="mb-5">
-            <button type="submit" class="btn btn-secondary">Cambiar</button>
+            <button type="submit" class="btn btn-success">Guardar Cambios</button>
         </div>
     </form>
     <!-- Mensaje de error -->
@@ -35,6 +35,12 @@
     {
         <div class="alert alert-danger mt-3" role="alert">
             @ViewBag.Error
+        </div>
+    }
+    @if (!string.IsNullOrEmpty(ViewBag.Exito))
+    {
+        <div class="alert alert-success mt-3" role="alert">
+            @ViewBag.Exito
         </div>
     }
 </div>

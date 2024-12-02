@@ -7,24 +7,34 @@
     width: 100%;
 }
 
-.result-container {
-    margin-top: 20px;
+.resultados {
+    margin-top: 60px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: flex-start;
 }
 
-.card-custom {
-    width: 100%;
-    height: auto;
-    margin-bottom: 20px;
+.card {
+    width: 18rem;
+    height: 25rem; /* Ajusta esta altura según tus necesidades */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
-.image-center {
-    display: block;
-    margin: 0 auto;
-    max-width: 100%;
-    max-height: 200px;
-    object-fit: cover;
+    .card img {
+        height: 12rem; /* Ajusta esta altura según tus necesidades */
+        object-fit: cover; /* Esto asegura que la imagen se ajuste bien dentro del contenedor */
+    }
+
+.lado {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 
-.card-body {
-    overflow: auto;
-}
+    .lado button {
+        margin-left: 10px;
+    }

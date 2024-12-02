@@ -1,5 +1,7 @@
 ﻿@model List<Propiedade>
 
+
+<h3 class="text-center">Mis Propiedades Publicadas</h3>
 @if (Model.Count != 0)
 {
     int i;
@@ -19,21 +21,22 @@
                         <div class="card-body">
                             <h5 class="card-title">@p.Titulo</h5>
                             <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a href="@Url.Action("Editar", "Propiedades", new {id = e.IdPropiedad})" class="btn btn-info">Editar</a>
+                            <a href="@Url.Action("Editar", "Propiedades", new {id = e.IdPropiedad})" class="btn btn-info @(p.Estado == "D" ? "disabled" : "")">Editar</a>
                             @{
                                 if (p.Estado == "H")
                                 {
-                                    <a href="@Url.Action("Pausar", "Propiedades", new {id = e.IdPropiedad})" class="btn btn-warning">Pausar</a>
+                                   
+                                    <a href="@Url.Action("Pausar", "Propiedades", new {id = e.IdPropiedad, op = 1})" class="btn btn-warning">Pausar Publicación</a>
                                 }
                                 else
                                 {
-                                    <a href="@Url.Action("Pausar", "Propiedades", new {id = e.IdPropiedad})" class="btn btn-warning">Activar</a>
+                                    <a href="@Url.Action("Pausar", "Propiedades", new {id = e.IdPropiedad, op = 2})" class="btn btn-warning">Activar Publicación</a>
                                 }
                             }
-                            <a href="@Url.Action("Eliminar", "Propiedades", new {id = e.IdPropiedad})" class="btn btn-success">Eliminar</a>
+                            <a href="@Url.Action("Eliminar", "Propiedades", new {id = e.IdPropiedad})" class="btn btn-success @(p.Estado == "D" ? "disabled" : "") mt-2">Eliminar</a>
                             @if (p.Duda.Count != 0)
                             {
-                                <a href="@Url.Action("Detalles", "Propiedades", new { id = p.IdPropiedad })" class="btn btn-secondary mt-2">Dudas</a>
+                                <a href="@Url.Action("Detalles", "Propiedades", new { id = p.IdPropiedad })" class="btn btn-secondary mt-2 @(p.Estado == "D" ? "disabled" : "")">Preguntas</a>
                             }
                         </div>
                     }

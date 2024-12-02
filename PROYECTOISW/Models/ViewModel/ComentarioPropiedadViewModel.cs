@@ -6,5 +6,6 @@ namespace PROYECTOISW.Models.ViewModel
     {
         public List<Propiedade> Propiedad { get; set; }
         public ComentarioViewModel Comentario { get; set; }
+        public List<bool> reseñas { get; set; }
     }
 }

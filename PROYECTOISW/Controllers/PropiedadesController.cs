@@ -246,6 +246,7 @@ namespace PROYECTOISW.Controllers
             var d = await _contexto.Dudas.Where(w => w.IdPropiedad == id).ToListAsync();
             var f = await _contexto.Favoritos.Where(f => f.IdPropiedad == id).ToListAsync();
             var c = await _contexto.Reseñas.Where(c => c.IdPropiedad == id).ToListAsync();
+            var r = await _contexto.Rentadas.Where(r => r.IdPropiedad == id).ToListAsync();
             if (e.Any())
             {
                 foreach (var el in e)
@@ -278,6 +279,14 @@ namespace PROYECTOISW.Controllers
                 }
                 await _contexto.SaveChangesAsync();
             }
+            if (r.Any())
+            {
+                foreach (var rentada in r)
+                {
+                    _contexto.Rentadas.Remove(rentada);
+                }
+                await _contexto.SaveChangesAsync();
+            }
             //Eliminar la propiedad
             Propiedade elimiar = await _contexto.Propiedades.FirstAsync(e => e.IdPropiedad == id);
             _contexto.Propiedades.Remove(elimiar);
@@ -286,17 +295,16 @@ namespace PROYECTOISW.Controllers
         }
         #endregion
 
-        #region Pausar Publicacioon
         [HttpGet]
-        public async Task<IActionResult> Pausar(int id)
+        public async Task<IActionResult> Pausar(int id, int op)
         {
+            string estado = "";
+            if (op == 1) estado = "D"; else estado = "H";
             await _contexto.Propiedades.Where(i => i.IdPropiedad == id)
-                .ExecuteUpdateAsync(setters => setters.SetProperty(s => s.Estado, "S"));
+                .ExecuteUpdateAsync(setters => setters.SetProperty(s => s.Estado, estado));
             await _contexto.SaveChangesAsync();
             return RedirectToAction(nameof(GestionarPropiedades));
         }
-        #endregion
-
         #region Contactar
         [HttpGet]
         public async Task<IActionResult> Contactar(int idUser, int idPropiedad)

@@ -5,18 +5,25 @@
     <input asp-for="Id" type="hidden" />
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="mb-5">
-        <h1>Cambiar Correo</h1>
-        <label asp-for="Contraseña" class="form-label"></label>
-        <input asp-for="Contraseña" type="password" class="form-control" placeholder="Ingresar Contraseña" />
-        <span asp-validation-for="Contraseña" class="text-danger"></span>
-    </div>
-    <div class="mb-5">
         <label asp-for="NuevoCorreo" class="form-label"></label>
         <input asp-for="NuevoCorreo" class="form-control" type="email" placeholder="Ingresar Nuevo Correo" />
         <span asp-validation-for="Contraseña" class="text-danger"></span>
     </div>
     <div class="mb-5">
-        <button type="submit" class="btn btn-warning">Cambiar</button>
+        <h1>Cambiar Correo</h1>
+        <label asp-for="Contraseña" class="form-label"></label>
+        <input asp-for="Contraseña" type="password" class="form-control" placeholder="Ingresar Contraseña" />
+        <span asp-validation-for="Contraseña" class="text-danger"></span>
+    </div>
+    
+    @if (!string.IsNullOrEmpty(ViewBag.Encontrado))
+    {
+        <div class="alert alert-danger mt-3" role="alert">
+            @ViewBag.Encontrado
+        </div>
+    }
+    <div class="mb-5">
+        <button type="submit" class="btn btn-success">Guardar Cambios</button>
     </div>
 </form>
 <!-- Mensaje de error -->
@@ -24,6 +31,12 @@
 {
     <div class="alert alert-danger mt-3" role="alert">
         @ViewBag.Error
+    </div>
+}
+@if (!string.IsNullOrEmpty(ViewBag.Exito))
+{
+    <div class="alert alert-success mt-3" role="alert">
+        @ViewBag.Exito
     </div>
 }
 

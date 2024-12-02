@@ -15,23 +15,30 @@
     <link rel="stylesheet" href="~/PROYECTOISW.styles.css" asp-append-version="true" />
 </head>
 <body>
-<h1>Soy el formulario de dudas</h1>
-
-<form asp-action="CrearDuda" asp-controller="Busqueda" method="post">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <input asp-for="IdPropiedad" type="hidden"/>
-    <div class="mb-4">
-        <label asp-for="Duda" class="form-label"></label>
-        <input asp-for="Duda" class="form-control" type="text" />
-        <span asp-validation-for="Duda" class="text-danger"></span>
+    @* <h1>Soy el formulario de dudas</h1> *@
+    <div class="container mt-5">
+        <form asp-action="CrearDuda" asp-controller="Busqueda" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="IdPropiedad" type="hidden" />
+            <div class="mb-4">
+                <label asp-for="Duda" class="form-label"></label>
+                <input asp-for="Duda" class="form-control" type="text" id="dudaInput" />
+                <span asp-validation-for="Duda" class="text-danger"></span>
+            </div>
+            <div class="mb-4">
+                <button type="submit" class="btn btn-success" id="submitButton" disabled>Publicar</button>
+            </div>
+        </form>
     </div>
-    <div class="mb-4">
-        <button type="submit" class="btn btn-success">Publicar</button>
-    </div>
-</form>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        document.getElementById('dudaInput').addEventListener('input', function() {
+            var input = document.getElementById('dudaInput').value;
+            document.getElementById('submitButton').disabled = input.length === 0;
+        });
+    </script>
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }

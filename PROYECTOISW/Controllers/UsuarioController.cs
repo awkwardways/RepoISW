@@ -205,8 +205,10 @@ namespace PROYECTOISW.Controllers
                 await _contexto.SaveChangesAsync();
 
                 //Cerrar la sesion actual
-                BorrarCookie();
-                return RedirectToAction("IniciarSesion", "Usuario");
+                //BorrarCookie();
+                // return RedirectToAction("IniciarSesion", "Usuario");
+                ViewBag.Exito = "Contraseña actualizada con éxito";
+                return View();
             }
             return View();
         }
@@ -233,6 +235,13 @@ namespace PROYECTOISW.Controllers
         {
             if (ModelState.IsValid)
             {
+                //Verifica que el correo no exista en el sistema
+                var registrado = await _contexto.Usuarios.Where(c => c.CorreoElectronico == nuevo.NuevoCorreo).FirstOrDefaultAsync();
+                if (registrado != null)
+                {
+                    ViewBag.Encontrado = $"Correo ya esta registrado, ingrese otro correo.";
+                    return View(nuevo);
+                }
                 try
                 {
                     //1. Buscar la contraseña y el id
@@ -251,10 +260,11 @@ namespace PROYECTOISW.Controllers
                     .ExecuteUpdateAsync(setters =>
                     setters.SetProperty(t => t.CorreoElectronico, nuevo.NuevoCorreo));
                     await _contexto.SaveChangesAsync();
-
+                    ViewBag.Exito = "Correo actualizado con éxito";
                     //Cerrar la sesion actual
-                    BorrarCookie();
-                    return RedirectToAction("IniciarSesion", "Usuario");
+                    //  BorrarCookie();
+                    // return RedirectToAction("IniciarSesion", "Usuario");
+                    return View();
                 }
                 catch (Exception ex)
                 {
