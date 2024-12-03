@@ -55,7 +55,7 @@ namespace PROYECTOISW.Models.ViewModel.PropiedadViewModel
         public string? Direccion { get; set; }
 
         [Required(ErrorMessage = "El campo es obligatorio")]
-        [Range(1, 999, ErrorMessage = "El máximo es 999 KM")]
+    //    [Range(1, 999, ErrorMessage = "El máximo es 999 KM")]
         [Display(Name = "Distancia del inmueble a ESIME Culhuácan")]
         public int Distancia { get; set; }
 

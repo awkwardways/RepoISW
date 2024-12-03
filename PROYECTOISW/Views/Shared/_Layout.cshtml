@@ -30,6 +30,20 @@
             display: block;
         }
     </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>    
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $.ajax({
+                url: '@Url.Action("CheckAlquiladas", "Home")',
+                type: 'GET',
+                success: function(data) {
+                    if (data.tienePropiedadesAlquiladas) {
+                        $('#alquiladas-link').show();
+                    }
+                }
+            });
+        });
+    </script>
 </head>
 <body>
     <div class="contenedor">
@@ -55,7 +69,11 @@
                                         Buscar Propiedades <!-- Texto a la derecha del ícono -->
                                     </a>
                                 </li>
-                                <li class="nav-item"><a href="@Url.Action("Rentadas", "Busqueda")" class="nav-link text-dark">Propiedades Alquiladas</a></li>
+                                <li class="nav-item" id="alquiladas-link" style="display:none;">
+                                    <a href="@Url.Action("Rentadas", "Busqueda")" class="nav-link text-dark">Propiedades Alquiladas</a>
+                                </li>
+                              @*   <li class="nav-item"><a href="@Url.Action("Rentadas", "Busqueda")" class="nav-link text-dark">Propiedades Alquiladas</a></li> *@
+
                                 <li class="nav-item"><a href="@Url.Action("Mostrar", "Favoritos")" class="nav-link text-dark">Favoritos</a></li>
                             }
                             else if (User.IsInRole("P"))

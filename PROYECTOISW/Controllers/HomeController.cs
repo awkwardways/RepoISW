@@ -43,7 +43,21 @@ namespace PROYECTOISW.Controllers
             }
             return View(usuario);
         }
-
+        [HttpGet]
+        public JsonResult CheckAlquiladas()
+        {
+            bool tienePropiedadesAlquiladas = Alquiladas();
+            return Json(new { tienePropiedadesAlquiladas });
+        }
+        public bool Alquiladas()
+        {
+            var claimsIdentity = User.Identity as ClaimsIdentity;
+            var idUser = claimsIdentity?.FindFirst("Id_Usuario")?.Value;
+            var rentadas = _contexto.Rentadas.Where(id => id.IdUsuario == int.Parse(idUser)).FirstOrDefault();
+            if (rentadas != null)
+                return true;
+            else return false;
+        }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
