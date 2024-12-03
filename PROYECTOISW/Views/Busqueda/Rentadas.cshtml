@@ -15,7 +15,7 @@
                     @{
                         var base64 = Convert.ToBase64String(e.Imagen);
                         var imgSrc = $"data:image/jpeg;base64,{base64}";
-                    }
+                    } 
                     <img src="@imgSrc" alt="Imagen de la propiedad" style="width:100%; height:auto" />
                     <!-- <a href="@Url.Action("Detalles", "Busqueda", new { id = e.IdPropiedad })" target="_blank">
 
