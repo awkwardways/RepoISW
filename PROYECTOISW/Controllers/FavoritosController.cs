@@ -36,9 +36,15 @@ namespace PROYECTOISW.Controllers
         #endregion
 
         #region Crear Favoritos
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> Favoritos(int idPropiedad)
         {
+            //Verificar que el favorito no exista
+            var encontrado = await _contexto.Favoritos.Where(id => id.IdPropiedad == idPropiedad).FirstAsync();
+            if (encontrado != null)
+            {
+                return Content("");
+            }
             var claimsIdentity = User.Identity as ClaimsIdentity;
             var idUser = claimsIdentity?.FindFirst("Id_Usuario")?.Value;
             Favorito f = new Favorito();

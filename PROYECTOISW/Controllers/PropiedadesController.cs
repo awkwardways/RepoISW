@@ -299,7 +299,15 @@ namespace PROYECTOISW.Controllers
         public async Task<IActionResult> Pausar(int id, int op)
         {
             string estado = "";
-            if (op == 1) estado = "D"; else estado = "H";
+            if (op == 1) 
+                estado = "D"; 
+            else 
+            {
+                var rentada = await _contexto.Rentadas.Where(i => i.IdPropiedad == id).FirstAsync();
+                if (rentada != null) 
+                    _contexto.Rentadas.Remove(rentada);
+                estado = "H"; 
+            }
             await _contexto.Propiedades.Where(i => i.IdPropiedad == id)
                 .ExecuteUpdateAsync(setters => setters.SetProperty(s => s.Estado, estado));
             await _contexto.SaveChangesAsync();
