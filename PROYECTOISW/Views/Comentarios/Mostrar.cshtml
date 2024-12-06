@@ -15,26 +15,27 @@
     <link rel="stylesheet" href="~/PROYECTOISW.styles.css" asp-append-version="true" />
 </head>
 <body>
-<h1>Comentarios</h1>
-
-@foreach (var r in Model)
-{
-    <h1>Nombre del alumno: @r.IdUsuarioNavigation.NombreCompleto</h1>
-    <h1>
-        @for (int i = 0; i < 5; i++)
+    <div class="container">
+        <h2>Comentarios</h2>
+        @foreach (var r in Model)
         {
-            if (i < r.Calificacion)
-            {
-                <span class="text-warning">&#9733;</span> <!-- Estrella amarilla -->
-            }
-            else
-            {
-                <span class="text-secondary">&#9733;</span> <!-- Estrella gris -->
-            }
+            <h3>Nombre del alumno: @r.IdUsuarioNavigation.NombreCompleto</h3>
+            <h4>
+                @for (int i = 0; i < 5; i++)
+                {
+                    if (i < r.Calificacion)
+                    {
+                        <span class="text-warning">&#9733;</span> <!-- Estrella amarilla -->
+                    }
+                    else
+                    {
+                        <span class="text-secondary">&#9733;</span> <!-- Estrella gris -->
+                    }
+                }
+            </h4>
+            <h5>@r.Comentario</h5>
         }
-    </h1>
-    <h1>@r.Comentario</h1>
-}
+    </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
