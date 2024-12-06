@@ -2,53 +2,62 @@
 
 
 <h3 class="text-center">Mis Propiedades Publicadas</h3>
-@if (Model.Count != 0)
-{
-    int i;
-    @foreach (var p in Model)
+@{
+    if (Model != null)
     {
-        i = 0;
-        foreach (var e in p.Imagenes)
+        if (Model.Count != 0)
         {
-            if (i == 0)
+            int i;
+            @foreach (var p in Model)
             {
-                <div class="card" style="width: 18rem;">
-                    @{
-                        var base64 = Convert.ToBase64String(e.Imagen);
-                        var imgSrc = $"data:image/jpeg;base64,{base64}";
-
-                        <img src="@imgSrc" alt="Imagen de la propiedad" style="height:auto; width:100%" />
-                        <div class="card-body">
-                            <h5 class="card-title">@p.Titulo</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a href="@Url.Action("Editar", "Propiedades", new {id = e.IdPropiedad})" class="btn btn-info @(p.Estado == "D" ? "disabled" : "")">Editar</a>
+                i = 0;
+                foreach (var e in p.Imagenes)
+                {
+                    if (i == 0)
+                    {
+                        <div class="card" style="width: 18rem;">
                             @{
-                                if (p.Estado == "H")
-                                {
-                                   
-                                    <a href="@Url.Action("Pausar", "Propiedades", new {id = e.IdPropiedad, op = 1})" class="btn btn-warning">Pausar Publicación</a>
-                                }
-                                else
-                                {
-                                    <a href="@Url.Action("Pausar", "Propiedades", new {id = e.IdPropiedad, op = 2})" class="btn btn-warning">Activar Publicación</a>
-                                }
-                            }
-                            <a href="@Url.Action("Eliminar", "Propiedades", new {id = e.IdPropiedad})" class="btn btn-success @(p.Estado == "D" ? "disabled" : "") mt-2">Eliminar</a>
-                            @if (p.Duda.Count != 0)
-                            {
-                                // <a href="@Url.Action("Detalles", "Propiedades", new { id = p.IdPropiedad })" class="btn btn-secondary mt-2 @(p.Estado == "D" ? "disabled" : "")">Preguntas</a>
-                                <a href="@Url.Action("Contactar","Busqueda", new { idPropiedad = p.IdPropiedad })" class="btn btn-secondary mt-2 @(p.Estado == "D" ? "disabled" : "")">Preguntas</a>
+                                var base64 = Convert.ToBase64String(e.Imagen);
+                                var imgSrc = $"data:image/jpeg;base64,{base64}";
+
+                                <img src="@imgSrc" alt="Imagen de la propiedad" style="height:auto; width:100%" />
+                                <div class="card-body">
+                                    <h5 class="card-title">@p.Titulo</h5>
+                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                    <a href="@Url.Action("Editar", "Propiedades", new {id = e.IdPropiedad})" class="btn btn-info @(p.Estado == "D" ? "disabled" : "")">Editar</a>
+                                    @{
+                                        if (p.Estado == "H")
+                                        {
+
+                                            <a href="@Url.Action("Pausar", "Propiedades", new {id = e.IdPropiedad, op = 1})" class="btn btn-warning">Pausar Publicación</a>
+                                        }
+                                        else
+                                        {
+                                            <a href="@Url.Action("Pausar", "Propiedades", new {id = e.IdPropiedad, op = 2})" class="btn btn-warning">Activar Publicación</a>
+                                        }
+                                    }
+                                    <a href="@Url.Action("Eliminar", "Propiedades", new {id = e.IdPropiedad})" class="btn btn-success @(p.Estado == "D" ? "disabled" : "") mt-2">Eliminar</a>
+                                    @if (p.Duda.Count != 0)
+                                    {
+                                        // <a href="@Url.Action("Detalles", "Propiedades", new { id = p.IdPropiedad })" class="btn btn-secondary mt-2 @(p.Estado == "D" ? "disabled" : "")">Preguntas</a>
+                                        <a href="@Url.Action("Contactar","Busqueda", new { idPropiedad = p.IdPropiedad })" class="btn btn-secondary mt-2 @(p.Estado == "D" ? "disabled" : "")">Preguntas</a>
+                                    }
+                                </div>
                             }
                         </div>
+                        i++;
                     }
-                </div>
-                i++;
+                    else break;
+                }
             }
-            else break;
+        }
+        else
+        {
+            <div>Aun no hay publicaciones hechas</div>
         }
     }
-}
-else
-{
-    <div>Aun no hay publicaciones hechas</div>
+    else
+    {
+        <h4 class="container">No hay propiedades publicadas</h4>
+    }
 }
