@@ -303,7 +303,7 @@ namespace PROYECTOISW.Controllers
                 estado = "D"; 
             else 
             {
-                var rentada = await _contexto.Rentadas.Where(i => i.IdPropiedad == id).FirstAsync();
+                var rentada = await _contexto.Rentadas.Where(i => i.IdPropiedad == id).FirstOrDefaultAsync();
                 if (rentada != null) 
                     _contexto.Rentadas.Remove(rentada);
                 estado = "H"; 
@@ -313,6 +313,7 @@ namespace PROYECTOISW.Controllers
             await _contexto.SaveChangesAsync();
             return RedirectToAction(nameof(GestionarPropiedades));
         }
+
         #region Contactar
         [HttpGet]
         public async Task<IActionResult> Contactar(int idUser, int idPropiedad)

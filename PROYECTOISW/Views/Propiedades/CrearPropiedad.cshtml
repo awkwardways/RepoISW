@@ -2,7 +2,15 @@
 @{
     ViewData["Title"] = "Crear Propiedad";
 }
-
+<style>
+    #mapContainer {
+        display: none;
+        width: 600px;
+        height: 450px;
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+    }
+</style>
 <div class="form-container">
     <h2>Agregar nueva propiedad</h2>
     <form asp-action="CrearPropiedad" method="post" enctype="multipart/form-data">
@@ -64,6 +72,10 @@
             <input asp-for="Direccion" class="form-control" placeholder="Dirección exacta" />
             <span asp-validation-for="Direccion" class="text-danger"></span>
         </div>
+        <a href="#" id="showMapLink">Mostrar Mapa</a>
+        <div id="mapContainer">
+            <iframe id="mapFrame" src="" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
 
         <div class="form-group">
             <label asp-for="Distancia">Distancia a ESIME (KM):</label>
@@ -101,4 +113,13 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script>
+        document.getElementById('showMapLink').addEventListener('click', function(event) {
+            event.preventDefault();
+            var mapContainer = document.getElementById('mapContainer');
+            var mapFrame = document.getElementById('mapFrame');
+            mapFrame.src = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3764.9215550264175!2d-99.11611492496596!3d19.329209981928166!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85ce01e54312cf13%3A0xb6ba41ed9b3b35a9!2sESIME%20Culhuac%C3%A1n!5e0!3m2!1ses-419!2smx!4v1733458432500!5m2!1ses-419!2smx";
+            mapContainer.style.display = 'block';
+        });
+    </script>
 }

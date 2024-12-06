@@ -24,6 +24,7 @@ namespace PROYECTOISW.Controllers
             _contexto = context;
             _servicioC = servicioC;
         }
+
         #region Busqueda
         [HttpGet]
         public async Task<IActionResult> Busqueda()
