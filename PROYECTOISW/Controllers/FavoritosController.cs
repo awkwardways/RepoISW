@@ -13,6 +13,7 @@ namespace PROYECTOISW.Controllers
         {
             _contexto = contexto;
         }
+
         #region Mostrar Favoritos
         [HttpGet]
         public async Task<IActionResult> Mostrar()
@@ -40,7 +41,7 @@ namespace PROYECTOISW.Controllers
         public async Task<IActionResult> Favoritos(int idPropiedad)
         {
             //Verificar que el favorito no exista
-            var encontrado = await _contexto.Favoritos.Where(id => id.IdPropiedad == idPropiedad).FirstAsync();
+            var encontrado = await _contexto.Favoritos.Where(id => id.IdPropiedad == idPropiedad).FirstOrDefaultAsync();
             if (encontrado != null)
             {
                 return Content("");

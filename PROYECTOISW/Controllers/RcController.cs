@@ -12,6 +12,7 @@ namespace PROYECTOISW.Controllers
         {
             _servicioRC = servicioRC;
         }
+
         #region Validar Correo
         [HttpGet]
         public IActionResult ValidarCorreo()
