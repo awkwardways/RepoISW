@@ -29,7 +29,7 @@ namespace PROYECTOISW.Controllers
             return View();
         }
         [HttpPost]
-        public async Task <IActionResult> CrearUsuario(CrearUsuarioViewModel nuevo, IFormFile? Foto)
+        public async Task <IActionResult> CrearUsuario(CrearUsuarioViewModel nuevo)
         {
             if (ModelState.IsValid)
             {
@@ -44,12 +44,12 @@ namespace PROYECTOISW.Controllers
                 nuevo.Tipo = nuevo.Tipo == "estudiante" ? "A" : "P";
 
                 //Verifiacar la foto
-                if (Foto != null && Foto.Length > 0)
+                if (nuevo.Foto != null &&  nuevo.Foto.Length > 0)
                 {
                     using (var memoryStream = new MemoryStream())
                     {
-                        await Foto.CopyToAsync(memoryStream);
-                        nuevo.Foto = memoryStream.ToArray();
+                        await nuevo.Foto.CopyToAsync(memoryStream);
+                        nuevo.Data = memoryStream.ToArray();
                     }
                 }
                 else
@@ -60,7 +60,7 @@ namespace PROYECTOISW.Controllers
                     using (var memoryStream = new MemoryStream())
                     {
                         await fileStream.CopyToAsync(memoryStream);
-                        nuevo.Foto = memoryStream.ToArray();
+                        nuevo.Data = memoryStream.ToArray();
                     }
                 }
 
@@ -83,7 +83,7 @@ namespace PROYECTOISW.Controllers
                     CorreoElectronico = nuevo.CorreoElectronico,
                     Contraseña =Cifrado.GetSHA256(nuevo.Contraseña),
                     Telefono = nuevo.Telefono,
-                    Foto = nuevo.Foto
+                    Foto = nuevo.Data
                 };
                 _contexto.Usuarios.Add(crear);
                 await _contexto.SaveChangesAsync();

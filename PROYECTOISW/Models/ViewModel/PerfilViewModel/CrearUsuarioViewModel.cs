@@ -35,7 +35,10 @@ namespace PROYECTOISW.Models.ViewModel.PerfilViewModel
         [MaxLength(10, ErrorMessage = "El numero no debe exceder los 10 digitos")]
         [Display(Name = "Telefono")]
         public string Telefono { get; set; }
+        [Required(ErrorMessage = "El campo es obligatorio")]
+        [Display(Name = "Fotos de la propiedad")]
+        public IFormFile Foto { get; set; }
 
-        public byte[]? Foto { get; set; }
+        public byte[]? Data { get; set; }
     }
 }

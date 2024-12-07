@@ -29,8 +29,24 @@
         .nav-item:hover .dropdown-menu {
             display: block;
         }
+
+        .miImagen {
+            width: 100px; /* Ajusta el tamaño de la imagen según tus necesidades */
+            height: 100px;
+            border-radius: 50%; /* Hace que la imagen sea circular */
+        }
+
+        .d-flex.align-items-center {
+            display: flex;
+            align-items: center;
+            margin-bottom: 60px; 
+        }
+
+        .ms-3 {
+            margin-left: 1rem; /* Ajusta el espacio entre la imagen y el nombre */
+        }
     </style>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
             $.ajax({
@@ -53,27 +69,26 @@
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <div class="collapse navbar-collapse flex-column" id="navbarNav">
-                        <img src="@Url.Action("ObtenerImagen", "Usuario")" alt="Foto de perfil" class="miImagen" />
-                        <h5 class="mt-5 mb-5">@User.Identity.Name</h5>
+                    <div class="collapse navbar-collapse flex-column align-items-center" id="navbarNav">
+                        <div class="d-flex align-items-center">
+                            <img src="@Url.Action("ObtenerImagen", "Usuario")" alt="Foto de perfil" class="miImagen" />
+                            <p class="ms-3 mb-0">@User.Identity.Name</p>
+                        </div>
                         <ul class="navbar-nav flex-column">
                             <!-- Evalua el rol del usuario -->
                             @if (User.IsInRole("A"))
                             {
-                                <li class="nav-item ms-auto">
-                                    <!-- ms-auto alinea el elemento a la derecha -->
+                                <li class="nav-item">
                                     <a href="@Url.Action("Busqueda", "Busqueda")" class="nav-link text-dark">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                                             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
                                         </svg>
-                                        Buscar Propiedades <!-- Texto a la derecha del ícono -->
+                                        Buscar Propiedades
                                     </a>
                                 </li>
                                 <li class="nav-item" id="alquiladas-link" style="display:none;">
                                     <a href="@Url.Action("Rentadas", "Busqueda")" class="nav-link text-dark">Propiedades Alquiladas</a>
                                 </li>
-                              @*   <li class="nav-item"><a href="@Url.Action("Rentadas", "Busqueda")" class="nav-link text-dark">Propiedades Alquiladas</a></li> *@
-
                                 <li class="nav-item"><a href="@Url.Action("Mostrar", "Favoritos")" class="nav-link text-dark">Favoritos</a></li>
                             }
                             else if (User.IsInRole("P"))
@@ -90,6 +105,7 @@
                                     <li><a class="dropdown-item" href="@Url.Action("CambiarContraseña", "Usuario")">Actualizar Contraseña</a></li>
                                     <li><a class="dropdown-item" href="@Url.Action("CambiarCorreo", "Usuario")">Actualizar Correo</a></li>
                                     <li><a class="dropdown-item" href="@Url.Action("CambiarTelefono", "Usuario")">Actualizar Teléfono</a></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("CambiarImagen", "Usuario")">Actualizar Foto de Perfil</a></li>
                                 </ul>
                             </li>
                             <li class="nav-item"><a href="@Url.Action("CerrarSesion","Usuario")" class="nav-link text-dark">Cerrar Sesión</a></li>

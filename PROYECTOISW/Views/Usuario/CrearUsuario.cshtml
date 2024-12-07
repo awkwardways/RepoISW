@@ -85,8 +85,9 @@
 
                 <!-- Carga de imagenes -->
                 <div class="mb-4">
-                    <label asp-for="Foto" class="form-label">Imagen</label>
+                    <label asp-for="Foto" class="form-label"></label>
                     <input asp-for="Foto" class="form-control" type="file" accept="image/*" />
+                    <span asp-validation-for="Foto" class="text-danger"></span>
                 </div>
 
                 <!-- Boton de Enviar -->

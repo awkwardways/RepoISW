@@ -30,7 +30,7 @@ namespace PROYECTOISW.Models.ViewModel.PropiedadViewModel
         public int PrecioRenta { get; set; }
 
         [Required(ErrorMessage = "El campo es obligatorio")]
-        [Range(1, 9999, ErrorMessage = "El rango maximo es 9999")]
+        [Range(1, 999, ErrorMessage = "El rango maximo es 999")]
         [Display(Name = "Superficie")]
         public string? Superficie { get; set; }
 
